@@ -1,0 +1,54 @@
+body {
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+:root,
+body,
+html {
+  margin: 0;
+  background-color: #ffffff;
+  box-sizing: border-box;
+}
+
+div, h1, h2, h3, h4, h5, h6, header, html, i, img, label, ul, li, nav, p, small, span {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: none;
+  font-size: 100%;
+  vertical-align: baseline;
+  background: transparent;
+}
+
+body {
+  font-family: Roboto;
+}
+
+@font-face {
+  font-family: "Roboto";
+  src: local("Roboto-Regular"),
+  url("./fonts/Roboto/Roboto-Regular.ttf") format("truetype");
+  font-weight: 200;
+}
+
+@font-face {
+  font-family: "Roboto Bold";
+  src: local("Roboto-Bold"),
+  url("./fonts/Roboto/Roboto-Bold.ttf") format("truetype");
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: "Roboto Light";
+  src: local("Roboto-Light"),
+  url("./fonts/Roboto/Roboto-Light.ttf") format("truetype");
+  font-weight: 200;
+}
+
+@font-face {
+  font-family: "Roboto Thin";
+  src: local("Roboto-Thin"),
+  url("./fonts/Roboto/Roboto-Thin.ttf") format("truetype");
+  font-weight: lighter;
+}
