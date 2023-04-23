@@ -6,7 +6,7 @@ const Header = (props) => {
       <Content>
         <Logo>
           <a href="/home">
-            <img src="/images/skillup.svg" alt="" />
+            <img src="/images/header-logo.svg" alt="" />
           </a>
         </Logo>
         <Search>
@@ -25,31 +25,23 @@ const Header = (props) => {
                 <span>Capacitaciones</span>
               </a>
             </NavList>
-
             <NavList>
               <a>
                 <img src="/images/portfolio.svg" alt="" />
                 <span>Pasantías</span>
               </a>
             </NavList>
-
             <NavList>
               <a>
                 <img src="/images/bell.svg" alt="" />
                 <span>Notificaciones</span>
               </a>
             </NavList>
-
             <User>
               <a>
                 <img src="/images/user.svg" alt="" />
                 <span>Mi perfil</span>
-                {/* <img src="/images/down-icon.svg" alt="" /> */}
               </a>
-
-              {/* <SignOut> */}
-              {/* <a>Sign Out</a> */}
-              {/* </SignOut> */}
             </User>
           </NavListWrap>
         </Nav>
@@ -67,6 +59,9 @@ const Container = styled.div`
   top: 0;
   width: 100vw;
   z-index: 100;
+  @media (max-width: 768px) {
+    padding: 0 10px;
+  }
 `;
 
 const Content = styled.div`
@@ -78,25 +73,24 @@ const Content = styled.div`
 `;
 
 const Logo = styled.span`
-  height: 55px;
-  width: 55px;
-  margin-right: 15px;
-  font-size: 0px;
+  /* height: 55px; */
+  /* width: 55px; */
+  margin-right: 10px;
 `;
 
 const Search = styled.div`
-  opacity: 1;
-  flex-grow: 1;
+  opacity: 92;
   position: relative;
   & > div {
-    max-width: 387px;
+    width: 387px;
+    /* max-width: 387px; */
     input {
       border: none;
       box-shadow: none;
       background-color: #f2e6cf;
       border-radius: 9px;
       color: rgba(0, 0, 0, 0.9);
-      width: 387px;
+      width: 100%;
       padding: 0 8px 0 40px;
       line-height: 1.75;
       font-weight: 400;
@@ -113,7 +107,7 @@ const SearchIcon = styled.div`
   position: absolute;
   z-index: 1;
   top: 10px;
-  left: 2px;
+  left: -175px;
   border-radius: 0 2px 2px 0;
   margin: 0;
   pointer-events: none;
@@ -125,6 +119,7 @@ const SearchIcon = styled.div`
 const Nav = styled.nav`
   margin-left: auto;
   display: block;
+  align-content: space-between;
   @media (max-width: 768px) {
     position: fixed;
     left: 0;
@@ -136,6 +131,7 @@ const Nav = styled.nav`
 
 const NavListWrap = styled.ul`
   display: flex;
+  align-content: space-between;
   background: #114c5f;
   flex-wrap: nowrap;
   list-style-type: none;
@@ -149,7 +145,7 @@ const NavListWrap = styled.ul`
       position: absolute;
       transition: transform 0.2s ease-in-out;
       width: 100%;
-      border-color: rgba(0, 0, 0, 0.9);
+      border-color: #f2e6cf;
     }
   }
 `;
@@ -189,40 +185,16 @@ const NavList = styled.li`
   }
 `;
 
-const SignOut = styled.div`
-  position: absolute;
-  top: 45px;
-  background: white;
-  border-radius: 0 0 5px 5px;
-  width: 387px;
-  height: 47px;
-  font-size: 16px;
-  transition-duration: 167ms;
-  text-align: center;
-  display: none;
-`;
-
 const User = styled(NavList)`
-  a > svg {
-    width: 24px;
-    border-radius: 50%;
-  }
-  a > img {
-    width: 24px;
-    height: 24px;
+  a > svg,
+  img {
+    width: 37px;
     border-radius: 50%;
   }
   span {
     display: flex;
     align-items: center;
   }
-  /* &:hover { */
-  /* ${SignOut} { */
-  /* align-items: center; */
-  /* display: flex; */
-  /* justify-content: center; */
-  /* } */
-  /* } */
 `;
 
 export default Header;

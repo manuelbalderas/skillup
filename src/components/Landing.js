@@ -99,7 +99,7 @@ const Container = styled.div`
   padding: 0;
 `;
 
-const Footer = styled.div`
+const Footer = styled.footer`
   img {
     max-width: 100%;
     margin-bottom: 20px;
