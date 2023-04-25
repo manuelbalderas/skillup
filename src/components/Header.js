@@ -107,7 +107,7 @@ const SearchIcon = styled.div`
   position: absolute;
   z-index: 1;
   top: 10px;
-  left: -175px;
+  left: -170px;
   border-radius: 0 2px 2px 0;
   margin: 0;
   pointer-events: none;

@@ -17,7 +17,7 @@ const Leftside = (props) => {
         </UserInfo>
         <Item>
           <span>
-            <img src="/images/save-icon.svg" alt="" />
+            <img src="/images/saved-icon.svg" alt="" />
             Empleos guardados
           </span>
         </Item>
