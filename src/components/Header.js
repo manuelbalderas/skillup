@@ -131,7 +131,11 @@ const Nav = styled.nav`
 
 const NavListWrap = styled.ul`
   display: flex;
-  align-content: space-between;
+
+  li:not(:last-child) {
+    margin-right: 1em;
+  }
+
   background: #114c5f;
   flex-wrap: nowrap;
   list-style-type: none;
@@ -145,7 +149,7 @@ const NavListWrap = styled.ul`
       position: absolute;
       transition: transform 0.2s ease-in-out;
       width: 100%;
-      border-color: #f2e6cf;
+      border-color: rgba(0, 0, 0, 0.9);
     }
   }
 `;
