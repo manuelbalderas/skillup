@@ -1,6 +1,16 @@
 import styled from "styled-components";
+import React, { useState } from "react";
 
 const Landing = (props) => {
+  const [showPassword, setShowPassword] = useState("Mostrar");
+
+  const changeShowPassword = () => {
+    if (showPassword == "Mostrar") {
+      setShowPassword("Ocultar");
+      return;
+    }
+    setShowPassword("Mostrar");
+  };
   return (
     <Container>
       <Nav>
@@ -39,15 +49,20 @@ const Landing = (props) => {
         <Form>
           <InputWrapper>
             <InputLabel>Correo electrónico</InputLabel>
-            <EmailField>
+            <InputField>
               <input type="email"></input>
-            </EmailField>
+            </InputField>
           </InputWrapper>
           <InputWrapper>
             <InputLabel>Contraseña</InputLabel>
-            <PasswordField>
-              <input type="password"></input>
-            </PasswordField>
+            <InputField>
+              <input
+                type={showPassword == "Mostrar" ? "password" : "text"}
+              ></input>
+              <button onClick={changeShowPassword}>
+                <span>{showPassword}</span>
+              </button>
+            </InputField>
           </InputWrapper>
           <ForgotPassword>
             <a href="">
@@ -141,7 +156,7 @@ const Nav = styled.div`
 
         span {
           color: #f2e6cf;
-          font-family: Roboto Bold;
+          font-weight: 600;
         }
 
         img {
@@ -192,11 +207,11 @@ const Hero = styled.div`
   width: 100%;
   h1 {
     padding-bottom: 0;
-    font-family: Roboto Thin;
     line-height: 67px;
     width: 35%;
     font-size: 42px;
     color: #8f5849;
+    font-weight: 200;
     @media (max-width: 768px) {
       text-align: center;
       font-size: 20px;
@@ -236,9 +251,10 @@ const InputWrapper = styled.div`
 const InputLabel = styled.label`
   margin-bottom: 10px;
   font-size: 14px;
+  font-weight: 600;
 `;
 
-const EmailField = styled.a`
+const InputField = styled.a`
   width: 400px;
   height: 30px;
   padding: 10px;
@@ -246,31 +262,43 @@ const EmailField = styled.a`
   border-radius: 4px;
   display: flex;
   align-items: center;
+
   input {
     border: none;
     height: 80%;
     width: 100%;
   }
-`;
 
-const PasswordField = styled.a`
-  width: 400px;
-  height: 30px;
-  padding: 10px;
-  border: 1px solid rgba(0, 0, 0, 0.75);
-  border-radius: 4px;
-  display: flex;
-  align-items: center;
-
-  input {
+  button {
+    background: transparent;
     border: none;
-    height: 80%;
-    width: 75%;
-  }
-  &:last-child {
-    margin-bottom: 0;
+    span {
+      font-size: 16;
+      color: #114c5f;
+      padding-left: 10px;
+      font-weight: 600;
+    }
   }
 `;
+
+// const PasswordField = styled.a`
+// width: 400px;
+// height: 30px;
+// padding: 10px;
+// border: 1px solid rgba(0, 0, 0, 0.75);
+// border-radius: 4px;
+// display: flex;
+// align-items: center;
+//
+// input {
+// border: none;
+// height: 80%;
+// width: 75%;
+// }
+// &:last-child {
+// margin-bottom: 0;
+// }
+// `;
 
 const ForgotPassword = styled.div`
   margin: 30px auto;
@@ -279,7 +307,7 @@ const ForgotPassword = styled.div`
     text-decoration: none;
     span {
       color: #114c5f;
-      font-family: Roboto Bold;
+      font-weight: 600;
     }
   }
 `;
@@ -291,6 +319,7 @@ const LogInHero = styled.a`
   padding: 15px 170px;
   border-radius: 24px;
   text-decoration: none;
+  font-weight: 600;
 `;
 
 const Divider = styled.div`
@@ -321,6 +350,7 @@ const SignUp = styled.a`
   padding: 15px 90px;
   border-radius: 24px;
   text-decoration: none;
+  font-weight: 600;
 `;
 
 const SecondaryHeader = styled.div`
@@ -339,11 +369,11 @@ const SecondaryHeader = styled.div`
   }
   h2 {
     padding-bottom: 0;
-    font-family: Roboto Thin;
     line-height: 67px;
     width: 50%;
     font-size: 48px;
     color: #000;
+    font-weight: 200;
     @media (max-width: 768px) {
       text-align: center;
       font-size: 20px;
@@ -384,9 +414,18 @@ const Leading = styled.div`
   margin-top: 100px;
   height: 800px;
   display: flex;
-
   img {
     margin-left: 40px;
+  }
+
+  @media (max-width: 768px) {
+    display: block;
+    text-align: center;
+    height: 600px;
+    img {
+      margin: 0;
+      height: 500px;
+    }
   }
 `;
 
@@ -397,7 +436,7 @@ const LeadingText = styled.div`
   height: 720px;
   div {
     width: 100%;
-    display: block;
+    display: inline-block;
     align-items: end;
     margin-left: 200px;
     margin-top: 100px;
@@ -407,19 +446,29 @@ const LeadingText = styled.div`
   span {
     font-size: 40px;
     color: #114c5f;
+    font-weight: 200;
   }
   span {
     color: #000;
-    font-family: Roboto Thin;
+    /* margin-top: 300px; */
+  }
+  @media (max-width: 768px) {
+    display: none;
   }
 `;
 
 const JoinUs = styled.h2`
-  font-family: Roboto Thin;
   font-size: 56px;
   margin-left: 200px;
   width: 55%;
   margin-bottom: 50px;
+  font-weight: 200;
+  @media (max-width: 768px) {
+    margin: auto;
+    text-align: center;
+    font-size: 40px;
+    padding-bottom: 100px;
+  }
 `;
 
 export default Landing;
