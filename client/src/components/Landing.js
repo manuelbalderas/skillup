@@ -2,15 +2,14 @@ import styled from "styled-components";
 import React, { useState } from "react";
 
 const Landing = (props) => {
-  const [showPassword, setShowPassword] = useState("Mostrar");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const changeShowPassword = () => {
-    if (showPassword == "Mostrar") {
-      setShowPassword("Ocultar");
-      return;
-    }
-    setShowPassword("Mostrar");
+    setShowPassword(!showPassword);
   };
+
   return (
     <Container>
       <Nav>
@@ -33,13 +32,14 @@ const Landing = (props) => {
             </a>
           </div>
           <div>
-            <a href="">
+            <a href="/sign-up">
               <img src="/images/registration.svg" alt="" />
               <span>Registrarse</span>
             </a>
           </div>
         </div>
-        <LogIn href="/">Ingresar</LogIn>
+        {/* <LogIn href="/">Ingresar</LogIn>
+         */}
       </Nav>
       <Section>
         <Hero>
@@ -50,17 +50,18 @@ const Landing = (props) => {
           <InputWrapper>
             <InputLabel>Correo electrónico</InputLabel>
             <InputField>
-              <input type="email"></input>
+              <input type="email" onChange={setEmail}></input>
             </InputField>
           </InputWrapper>
           <InputWrapper>
             <InputLabel>Contraseña</InputLabel>
             <InputField>
               <input
-                type={showPassword == "Mostrar" ? "password" : "text"}
+                type={showPassword ? "text" : "password"}
+                onChange={setPassword}
               ></input>
               <button onClick={changeShowPassword}>
-                <span>{showPassword}</span>
+                <span>{showPassword ? "Ocultar" : "Mostrar"}</span>
               </button>
             </InputField>
           </InputWrapper>
@@ -237,7 +238,12 @@ const Hero = styled.div`
 
 const Form = styled.div`
   @media (max-width: 768px) {
-    margin-left: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
+
+    /* margin-left: 20px; */
   }
 `;
 
@@ -265,6 +271,7 @@ const InputField = styled.a`
 
   input {
     border: none;
+    outline: none;
     height: 80%;
     width: 100%;
   }
@@ -280,25 +287,6 @@ const InputField = styled.a`
     }
   }
 `;
-
-// const PasswordField = styled.a`
-// width: 400px;
-// height: 30px;
-// padding: 10px;
-// border: 1px solid rgba(0, 0, 0, 0.75);
-// border-radius: 4px;
-// display: flex;
-// align-items: center;
-//
-// input {
-// border: none;
-// height: 80%;
-// width: 75%;
-// }
-// &:last-child {
-// margin-bottom: 0;
-// }
-// `;
 
 const ForgotPassword = styled.div`
   margin: 30px auto;
@@ -323,20 +311,48 @@ const LogInHero = styled.a`
 `;
 
 const Divider = styled.div`
+  display: flex;
+  align-items: center;
   text-align: center;
   padding-top: 40px;
   padding-bottom: 40px;
   width: 100%;
   span {
+    display: flex;
+    flex: 1;
+    height: 0;
+    margin: 0 20px;
+    align-items: center;
     &:before,
     &:after {
       content: "";
       flex: 1 1;
       border-bottom: 2px solid #ccc;
-      margin: auto;
     }
   }
+  span:before {
+    margin-right: 10px;
+  }
+  span:after {
+    margin-left: 10px;
+  }
 `;
+
+// const Divider = styled.div`
+//   text-align: center;
+//   padding-top: 40px;
+//   padding-bottom: 40px;
+//   width: 100%;
+//   span {
+//     &:before,
+//     &:after {
+//       content: "";
+//       flex: 1 1;
+//       border-bottom: 2px solid #ccc;
+//       margin: auto;
+//     }
+//   }
+// `;
 
 const SignUp = styled.a`
   /* width: 408px; */
@@ -450,7 +466,7 @@ const LeadingText = styled.div`
   }
   span {
     color: #000;
-    /* margin-top: 300px; */
+    margin-top: 2em;
   }
   @media (max-width: 768px) {
     display: none;
