@@ -1,10 +1,37 @@
 import styled from "styled-components";
 import React, { useState } from "react";
+import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router-dom";
 
 const Landing = (props) => {
+  const [cookies, setCookie, removeCookie] = useCookies(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+
+  const navigate = useNavigate();
+
+  const handleLogIn = async (e) => {
+    e.preventDefault();
+    const data = { email, password };
+
+    const response = await fetch(`http://localhost:8000/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+
+    const response_data = await response.json();
+    // console.log(response_data);
+    if (response_data.detail) {
+      // handle error, poner un texto que diga el error en algun lado
+    } else {
+      setCookie("Email", response_data.email);
+      setCookie("AuthToken", response_data.token);
+
+      navigate("/home");
+    }
+  };
 
   const changeShowPassword = () => {
     setShowPassword(!showPassword);
@@ -50,7 +77,10 @@ const Landing = (props) => {
           <InputWrapper>
             <InputLabel>Correo electrónico</InputLabel>
             <InputField>
-              <input type="email" onChange={setEmail}></input>
+              <input
+                type="email"
+                onChange={(e) => setEmail(e.target.value)}
+              ></input>
             </InputField>
           </InputWrapper>
           <InputWrapper>
@@ -58,7 +88,7 @@ const Landing = (props) => {
             <InputField>
               <input
                 type={showPassword ? "text" : "password"}
-                onChange={setPassword}
+                onChange={(e) => setPassword(e.target.value)}
               ></input>
               <button onClick={changeShowPassword}>
                 <span>{showPassword ? "Ocultar" : "Mostrar"}</span>
@@ -70,7 +100,9 @@ const Landing = (props) => {
               <span>¿Olvidaste tu contraseña?</span>
             </a>
           </ForgotPassword>
-          <LogInHero href="">Ingresar</LogInHero>
+          <LogInHero>
+            <button onClick={handleLogIn}>Ingresar</button>
+          </LogInHero>
           <Divider>
             <span>o</span>
           </Divider>
@@ -300,14 +332,20 @@ const ForgotPassword = styled.div`
   }
 `;
 
-const LogInHero = styled.a`
+const LogInHero = styled.div`
   background-color: #114c5f;
-  color: #fff;
-  width: 170px;
-  padding: 15px 170px;
-  border-radius: 24px;
-  text-decoration: none;
-  font-weight: 600;
+  padding: 20px 170px;
+  border-radius: 30px;
+  display: flex;
+  button {
+    width: 100%;
+    heigth: 100%;
+    color: #fff;
+    font-weight: 600;
+    background: transparent;
+    border: none;
+    font-size: 16px;
+  }
 `;
 
 const Divider = styled.div`

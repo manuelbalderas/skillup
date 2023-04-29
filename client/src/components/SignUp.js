@@ -1,8 +1,45 @@
 import { useState } from "react";
+// require("dotenv").config();
 import styled from "styled-components";
+import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router-dom";
 
 const SignUp = (props) => {
+  const [cookies, setCookie, removeCookie] = useCookies(null);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [country, setCountry] = useState("");
+  const [city, setCity] = useState("");
+  const [university, setUniversity] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  console.log(email, password, name, lastName, country, city, university);
+
+  const navigate = useNavigate();
+
+  const handleClick = async (e) => {
+    e.preventDefault();
+    const data = { email, password, name, lastName, country, city, university };
+
+    const response = await fetch(`http://localhost:8000/signup`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+
+    const response_data = await response.json();
+    // console.log(response_data);
+    if (response_data.detail) {
+      // handle error, poner un texto que diga el error en algun lado
+    } else {
+      setCookie("Email", response_data.email);
+      setCookie("AuthToken", response_data.token);
+
+      navigate("/");
+    }
+  };
+
   return (
     <Container>
       <img src="/images/sign-up-logo.svg" />
@@ -11,46 +48,46 @@ const SignUp = (props) => {
         <InputWrapper>
           <InputLabel>Correo electrónico</InputLabel>
           <InputField>
-            <input></input>
+            <input onChange={(e) => setEmail(e.target.value)}></input>
           </InputField>
         </InputWrapper>
         <InputWrapper>
           <InputLabel>Contraseña</InputLabel>
           <InputField>
-            <input></input>
+            <input onChange={(e) => setPassword(e.target.value)}></input>
           </InputField>
         </InputWrapper>
         <InputWrapper>
           <InputLabel>Nombre</InputLabel>
           <InputField>
-            <input></input>
+            <input onChange={(e) => setName(e.target.value)}></input>
           </InputField>
         </InputWrapper>
         <InputWrapper>
           <InputLabel>Apellido</InputLabel>
           <InputField>
-            <input></input>
+            <input onChange={(e) => setLastName(e.target.value)}></input>
           </InputField>
         </InputWrapper>
         <InputWrapper>
           <InputLabel>País</InputLabel>
           <InputField>
-            <input></input>
+            <input onChange={(e) => setCountry(e.target.value)}></input>
           </InputField>
         </InputWrapper>
         <InputWrapper>
           <InputLabel>Ciudad</InputLabel>
           <InputField>
-            <input></input>
+            <input onChange={(e) => setCity(e.target.value)}></input>
           </InputField>
         </InputWrapper>
         <InputWrapper>
           <InputLabel>Universidad</InputLabel>
           <InputField>
-            <input></input>
+            <input onChange={(e) => setUniversity(e.target.value)}></input>
           </InputField>
         </InputWrapper>
-        <button>Aceptar y unirse</button>
+        <button onClick={handleClick}>Aceptar y unirse</button>
         <span style={{ color: "#114C5F", fontSize: 16 }}>
           ¿Ya eres miembro de SkillUp?
           <a style={{ color: "#0799B6", fontWeight: 600 }}> Iniciar sesión</a>
