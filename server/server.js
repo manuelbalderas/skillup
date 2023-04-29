@@ -53,7 +53,7 @@ app.post("/login", async (req, res) => {
     );
     const token = jwt.sign({ email }, "secret", { expiresIn: "7d" });
     if (success) {
-      res.json({ email: users.rows[0].email, token });
+      res.json({ user: users.rows[0], token });
     } else {
       res.json({ detail: "Usuario o contraseña incorrectos." });
     }

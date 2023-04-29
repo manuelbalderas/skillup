@@ -2,38 +2,40 @@ import styled from "styled-components";
 
 const Main = (props) => {
   return (
-    <Container>
-      <Publications>
-        <Title href="">Recomendaciones</Title>
-        <Publication>
-          <Photo src="/images/spotify.png" />
-          <div>
-            <PublicationTitle>Data Engineer - Music</PublicationTitle>
-            <ProfileName>Spotify</ProfileName>
-            <Place>México (En remoto)</Place>
-            <Time>Hace 7 horas</Time>
-          </div>
-          <button>
-            <img src="/images/save-icon.svg" alt="" />
-          </button>
-        </Publication>
-      </Publications>
-      <Publications>
-        <Title href="">Más pasantías para ti</Title>
-        <Publication>
-          <Photo src="/images/spotify.png" />
-          <div>
-            <PublicationTitle>Data Engineer - Music</PublicationTitle>
-            <ProfileName>Spotify</ProfileName>
-            <Place>México (En remoto)</Place>
-            <Time>Hace 7 horas</Time>
-          </div>
-          <button>
-            <img src="/images/save-icon.svg" alt="" />
-          </button>
-        </Publication>
-      </Publications>
-    </Container>
+    <>
+      <Container>
+        <Publications>
+          <Title href="">Recomendaciones</Title>
+          <Publication>
+            <Photo src="/images/spotify.png" />
+            <div>
+              <PublicationTitle>Data Engineer - Music</PublicationTitle>
+              <ProfileName>Spotify</ProfileName>
+              <Place>México (En remoto)</Place>
+              <Time>Hace 7 horas</Time>
+            </div>
+            <button>
+              <img src="/images/save-icon.svg" alt="" />
+            </button>
+          </Publication>
+        </Publications>
+        <Publications>
+          <Title href="">Más pasantías para ti</Title>
+          <Publication>
+            <Photo src="/images/spotify.png" />
+            <div>
+              <PublicationTitle>Data Engineer - Music</PublicationTitle>
+              <ProfileName>Spotify</ProfileName>
+              <Place>México (En remoto)</Place>
+              <Time>Hace 7 horas</Time>
+            </div>
+            <button>
+              <img src="/images/save-icon.svg" alt="" />
+            </button>
+          </Publication>
+        </Publications>
+      </Container>
+    </>
   );
 };
 
