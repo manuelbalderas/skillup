@@ -18,7 +18,6 @@ function App() {
             path="/create"
             element={[<Header />, <CreatePublication />]}
           ></Route>
-          {/* <Route path="/home" element={[<Header />, <Home />]}></Route> */}
         </Routes>
       </Router>
     </div>

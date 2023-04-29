@@ -1,13 +1,42 @@
 import styled from "styled-components";
 import React, { useState } from "react";
+import { useCookies } from "react-cookie";
 
 const Landing = (props) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [cookies, setCookie, removeCookie] = useCookies(null);
+  const [email, setEmail] = useState(null);
+  const [authToken, setAuthToken] = useState(null);
+  const [password, setPassword] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
 
   const changeShowPassword = () => {
     setShowPassword(!showPassword);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const response = await fetch("localhost:8000/login", {
+      method: "POST",
+      header: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email,
+        password,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (data.detail) {
+      // handle
+    } else {
+      setCookie("Email", data.email);
+      setCookie("AuthToken", data.token);
+
+      window.location.reload();
+    }
+
+    await response.json();
   };
 
   return (
@@ -70,7 +99,7 @@ const Landing = (props) => {
               <span>¿Olvidaste tu contraseña?</span>
             </a>
           </ForgotPassword>
-          <LogInHero href="">Ingresar</LogInHero>
+          <LogInHero onClick={handleSubmit}>Ingresar</LogInHero>
           <Divider>
             <span>o</span>
           </Divider>
@@ -264,7 +293,7 @@ const InputField = styled.a`
   width: 400px;
   height: 30px;
   padding: 10px;
-  border: 1px solid rgba(0, 0, 0, 75%);
+  border: 1px solid rgba(0, 0, 0, 0.75);
   border-radius: 4px;
   display: flex;
   align-items: center;
@@ -300,7 +329,7 @@ const ForgotPassword = styled.div`
   }
 `;
 
-const LogInHero = styled.a`
+const LogInHero = styled.button`
   background-color: #114c5f;
   color: #fff;
   width: 170px;
@@ -337,22 +366,6 @@ const Divider = styled.div`
     margin-left: 10px;
   }
 `;
-
-// const Divider = styled.div`
-//   text-align: center;
-//   padding-top: 40px;
-//   padding-bottom: 40px;
-//   width: 100%;
-//   span {
-//     &:before,
-//     &:after {
-//       content: "";
-//       flex: 1 1;
-//       border-bottom: 2px solid #ccc;
-//       margin: auto;
-//     }
-//   }
-// `;
 
 const SignUp = styled.a`
   /* width: 408px; */

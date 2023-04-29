@@ -1,8 +1,53 @@
+// require("dotenv").config();
 import { useState } from "react";
+import { useCookies } from "react-cookie";
 import styled from "styled-components";
 
 const SignUp = (props) => {
+  const [cookies, setCookie, removeCookie] = useCookies(null);
+  const [email, setEmail] = useState(null);
+  const [password, setPassword] = useState(null);
+  const [name, setName] = useState(null);
+  const [lastName, setLastName] = useState(null);
+  const [country, setCountry] = useState(null);
+  const [city, setCity] = useState(null);
+  const [university, setUniversity] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // console.log(process.env.SERVERURL);
+    const response = await fetch(`${process.env.SERVER_URL}/signup`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email,
+        password,
+        name,
+        lastName,
+        country,
+        city,
+        university,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (data.detail) {
+      // handle
+    } else {
+      setCookie("Email", data.email);
+      setCookie("AuthToken", data.token);
+
+      window.location.reload();
+    }
+
+    await response.json();
+  };
+
+  console.log(email, password, name, lastName, country, city, university);
+
   return (
     <Container>
       <img src="/images/sign-up-logo.svg" />
@@ -11,61 +56,81 @@ const SignUp = (props) => {
         <InputWrapper>
           <InputLabel>Correo electrónico</InputLabel>
           <InputField>
-            <input></input>
+            <input
+              type="email"
+              onChange={(e) => setEmail(e.target.value)}
+            ></input>
           </InputField>
         </InputWrapper>
         <InputWrapper>
           <InputLabel>Contraseña</InputLabel>
           <InputField>
-            <input></input>
+            <input
+              type="password"
+              onChange={(e) => setPassword(e.target.value)}
+            ></input>
           </InputField>
         </InputWrapper>
         <InputWrapper>
           <InputLabel>Nombre</InputLabel>
           <InputField>
-            <input></input>
+            <input
+              type="text"
+              onChange={(e) => setName(e.target.value)}
+            ></input>
           </InputField>
         </InputWrapper>
         <InputWrapper>
           <InputLabel>Apellido</InputLabel>
           <InputField>
-            <input></input>
+            <input
+              type="text"
+              onChange={(e) => setLastName(e.target.value)}
+            ></input>
           </InputField>
         </InputWrapper>
         <InputWrapper>
           <InputLabel>País</InputLabel>
           <InputField>
-            <input></input>
+            <input
+              type="text"
+              onChange={(e) => setCountry(e.target.value)}
+            ></input>
           </InputField>
         </InputWrapper>
         <InputWrapper>
           <InputLabel>Ciudad</InputLabel>
           <InputField>
-            <input></input>
+            <input
+              type="text"
+              onChange={(e) => setCity(e.target.value)}
+            ></input>
           </InputField>
         </InputWrapper>
         <InputWrapper>
           <InputLabel>Universidad</InputLabel>
           <InputField>
-            <input></input>
+            <input
+              type="text"
+              onChange={(e) => setUniversity(e.target.value)}
+            ></input>
           </InputField>
         </InputWrapper>
-        <button>Aceptar y unirse</button>
-        <span style={{ color: "#114C5F", fontSize: 16 }}>
-          ¿Ya eres miembro de SkillUp?
-          <a style={{ color: "#0799B6", fontWeight: 600 }}> Iniciar sesión</a>
-        </span>
-        <span
-          style={{
-            color: "#114C5F",
-            fontSize: 14,
-            margin: 10,
-            paddingBottom: 20,
-          }}
-        >
-          ¿Quieres crear un perfil para tu empresa?
-          <a style={{ color: "#0799B6", fontWeight: 600 }}> Hazlo acá</a>
-        </span>
+        <AcceptButton>
+          <button onClick={handleSubmit}>Aceptar y unirse</button>
+        </AcceptButton>
+        <LogIn>
+          <span>
+            ¿Ya eres miembro de SkillUp?
+            <a> Iniciar sesión</a>
+          </span>
+        </LogIn>
+        <Company>
+          <span>
+            ¿Quieres crear un perfil para tu empresa?
+            <a> Hazlo acá</a>
+          </span>
+        </Company>
       </Form>
     </Container>
   );
@@ -81,15 +146,13 @@ const Container = styled.div`
   margin: 0;
   background-color: #f3f2f0;
   text-align: center;
-  img {
-    margin-top: 10px;
-  }
   h1 {
-    font-weight: 200;
+    font-weight: 400;
     color: #114c5f;
     font-size: 32px;
-    margin: 20px;
+    margin: 40px 20px;
     @media (max-width: 768px) {
+      margin: 20px 10px;
       font-size: 20px;
     }
   }
@@ -97,23 +160,8 @@ const Container = styled.div`
 
 const Form = styled.div`
   background-color: white;
-  width: 462px;
-  /* height: 100%; */
+  width: 30%;
   border-radius: 13px;
-  margin: 10px;
-  @media (max-width: 768px) {
-    /* width: 80%; */
-  }
-  button {
-    margin: 15px auto;
-    color: white;
-    background: #0799b6;
-    border-radius: 24px;
-    padding: 14px 118px;
-    font-size: 16px;
-    border: none;
-    /* box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); */
-  }
   span {
     display: block;
   }
@@ -121,8 +169,8 @@ const Form = styled.div`
 
 const InputWrapper = styled.div`
   display: flex;
+  width: 100%;
   flex-direction: column;
-  text-align: start;
   margin-left: 40px;
   margin-top: 15px;
   &:first-child {
@@ -135,20 +183,58 @@ const InputWrapper = styled.div`
 
 const InputLabel = styled.span`
   font-size: 14px;
-  margin-bottom: -5px;
+  font-weight: 600;
+  /* margin-bottom: -5px; */
 `;
 
 const InputField = styled.a`
-  width: 342px;
+  width: 80%;
   height: 32px;
-  border-radius: 4px;
+  /* padding: 10px; */
   border: 1px solid rgba(0, 0, 0, 0.75);
-  margin-top: 10px;
-  padding-left: 10px;
-  /* outline: none; */
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+
   input {
+    border: none;
+    outline: none;
+    height: 100%;
     width: 100%;
-    margin: auto;
+  }
+`;
+
+const AcceptButton = styled.div`
+  button {
+    font-weight: 600;
+    margin: 15px 0px;
+    /* width: 30%; */
+    /* text-align: center; */
+    color: white;
+    background: #0799b6;
+    border-radius: 24px;
+    padding: 14px 118px;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  }
+`;
+
+const LogIn = styled.div`
+  span {
+    color: #114c5f;
+    font-size: 16;
+  }
+  a {
+    color: #0799b6;
+    font-weight: 600;
+  }
+`;
+
+const Company = styled(LogIn)`
+  span {
+    font-size: 14;
   }
 `;
 
