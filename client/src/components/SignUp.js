@@ -1,11 +1,10 @@
-import { useState } from "react";
-// require("dotenv").config();
+import { useState, useEffect } from "react";
+import { Navigate } from "react-router";
+import { connect } from "react-redux";
+import { studentSignUpAPI } from "../actions";
 import styled from "styled-components";
-import { useCookies } from "react-cookie";
-import { useNavigate } from "react-router-dom";
 
 const SignUp = (props) => {
-  const [cookies, setCookie, removeCookie] = useCookies(null);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
@@ -14,34 +13,27 @@ const SignUp = (props) => {
   const [city, setCity] = useState("");
   const [university, setUniversity] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  console.log(email, password, name, lastName, country, city, university);
 
-  const navigate = useNavigate();
+  useEffect(() => {
+    console.log(props.user);
+  });
 
   const handleClick = async (e) => {
     e.preventDefault();
-    const data = { email, password, name, lastName, country, city, university };
-
-    const response = await fetch(`http://localhost:8000/signup`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
+    props.signUp({
+      email,
+      password,
+      name,
+      lastName,
+      country,
+      city,
+      university,
     });
-
-    const response_data = await response.json();
-    // console.log(response_data);
-    if (response_data.detail) {
-      // handle error, poner un texto que diga el error en algun lado
-    } else {
-      setCookie("Email", response_data.email);
-      setCookie("AuthToken", response_data.token);
-
-      navigate("/");
-    }
   };
 
   return (
     <Container>
+      {props.user && console.log("Xd")}
       <img src="/images/sign-up-logo.svg" />
       <h1>Estás a unos pasos de cambiar tu futuro</h1>
       <Form>
@@ -189,4 +181,15 @@ const InputField = styled.a`
   }
 `;
 
-export default SignUp;
+const mapStateToProps = (state) => {
+  return {
+    user: state.authSuccess.user,
+    token: state.authSuccess.token,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  signUp: (data) => dispatch(studentSignUpAPI(data)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignUp);

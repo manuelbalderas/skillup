@@ -16,7 +16,7 @@ app.use(express.json());
 
 // sign up
 
-app.post("/signup", async (req, res) => {
+app.post("/student/signup", async (req, res) => {
   const { email, password, name, lastName, country, city, university } =
     req.body;
   const salt = bcrypt.genSaltSync(10);
@@ -39,7 +39,7 @@ app.post("/signup", async (req, res) => {
   }
 });
 
-app.post("/login", async (req, res) => {
+app.post("/student/login", async (req, res) => {
   const { email, password } = req.body;
   try {
     const users = await pool.query(`SELECT * FROM students WHERE email = $1`, [

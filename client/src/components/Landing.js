@@ -1,41 +1,23 @@
 import styled from "styled-components";
-import React, { useState, useEffect } from "react";
-import { useCookies } from "react-cookie";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Navigate } from "react-router";
+import { connect } from "react-redux";
+import { studentLogInAPI } from "../actions";
 
 const Landing = (props) => {
-  const [cookies, setCookie, removeCookie] = useCookies(["User", "AuthToken"]);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  const navigate = useNavigate();
-
-  const handleLogIn = async (e) => {
+  const handleLogin = (e) => {
     e.preventDefault();
-    const data = { email, password };
-
-    const response = await fetch(`http://localhost:8000/login`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    });
-
-    const response_data = await response.json();
-    // console.log(response_data);
-    if (response_data.detail) {
-      // handle error, poner un texto que diga el error en algun lado
-    } else {
-      setCookie("User", response_data.user);
-      setCookie("AuthToken", response_data.token);
-
-      navigate("/home");
-    }
+    props.logIn({ email, password });
+    console.log(props.user, props.token);
   };
 
   const handleSignUp = (e) => {
     e.preventDefault();
-    navigate("/sign-up");
+    <Navigate to="/sign-up" />;
   };
 
   const changeShowPassword = () => {
@@ -43,121 +25,111 @@ const Landing = (props) => {
   };
 
   useEffect(() => {
-    // console.log(cookies.User);
-    if (cookies.AuthToken) {
-      setCookie("User", cookies.User);
-      setCookie("AuthToken", cookies.AuthToken);
-      navigate("/home");
-    }
+    console.log(props.user, props.token);
   }, []);
 
   return (
-    <>
-      <Container>
-        <Nav>
-          <a href="/">
-            <img src="/images/skillup.svg" alt="" />
-          </a>
+    <Container>
+      {props.user && <Navigate to="/home" />}
+      <Nav>
+        <a href="/">
+          <img src="/images/skillup.svg" alt="" />
+        </a>
+        <div>
           <div>
-            <div>
-              <a href="">
-                <img src="/images/education.svg" alt="" />
-                <span>
-                  Capacitaciones<div></div>
-                </span>
-              </a>
-            </div>
-            <div>
-              <a href="">
-                <img src="/images/portfolio.svg" alt="" />
-                <span>Pasantías</span>
-              </a>
-            </div>
-            <div>
-              <a href="/sign-up">
-                <img src="/images/registration.svg" alt="" />
-                <span>Registrarse</span>
-              </a>
-            </div>
-          </div>
-          {/* <LogIn href="/">Ingresar</LogIn>
-           */}
-        </Nav>
-        <Section>
-          <Hero>
-            <h1>
-              Bienvenido a la mejor comunidad profesional para estudiantes
-            </h1>
-            <img src="/images/hero.svg" alt="" />
-          </Hero>
-          <Form>
-            <InputWrapper>
-              <InputLabel>Correo electrónico</InputLabel>
-              <InputField>
-                <input
-                  type="email"
-                  onChange={(e) => setEmail(e.target.value)}
-                ></input>
-              </InputField>
-            </InputWrapper>
-            <InputWrapper>
-              <InputLabel>Contraseña</InputLabel>
-              <InputField>
-                <input
-                  type={showPassword ? "text" : "password"}
-                  onChange={(e) => setPassword(e.target.value)}
-                ></input>
-                <button onClick={changeShowPassword}>
-                  <span>{showPassword ? "Ocultar" : "Mostrar"}</span>
-                </button>
-              </InputField>
-            </InputWrapper>
-            <ForgotPassword>
-              <a href="">
-                <span>¿Olvidaste tu contraseña?</span>
-              </a>
-            </ForgotPassword>
-            <LogInHero onClick={handleLogIn}>Ingresar</LogInHero>
-            <Divider>
-              <span>o</span>
-            </Divider>
-            <SignUp onClick={handleSignUp}>
-              ¿No tienes cuenta? Registrate
-            </SignUp>
-          </Form>
-        </Section>
-        <SecondaryHeader>
-          <h2>Encuentra la pasantía o la capacitación adecuada para ti</h2>
-          <img src="/images/layer1.svg" alt="" />
-        </SecondaryHeader>
-        <TalentFinder>
-          <h2>
-            Publica tus ofertas de pasantías o capacitaciones y recluta a los
-            mejores talentos
-          </h2>
-          <img src="/images/layer2.svg" alt="" />
-        </TalentFinder>
-        <Leading>
-          <LeadingText>
-            <div>
-              <h2>¿A quién se dirige SkillUp?</h2>
+            <a href="">
+              <img src="/images/education.svg" alt="" />
               <span>
-                A cualquier estudiante que busque dar un paso adelante en su
-                vida profesional o todos aquellos empresarios que busquen
-                reclutar para preparar a nuevos talentos
+                Capacitaciones<div></div>
               </span>
-            </div>
-          </LeadingText>
-          <img src="/images/team-up.png" alt="" />
-        </Leading>
-        <JoinUs>
-          ¡Únete a SkillUp con tus compañeros de clase o afilia a tu empresa!
-        </JoinUs>
-        <Footer>
-          <img src="/images/footer.png" alt="" />
-        </Footer>
-      </Container>
-    </>
+            </a>
+          </div>
+          <div>
+            <a href="">
+              <img src="/images/portfolio.svg" alt="" />
+              <span>Pasantías</span>
+            </a>
+          </div>
+          <div>
+            <a href="/sign-up">
+              <img src="/images/registration.svg" alt="" />
+              <span>Registrarse</span>
+            </a>
+          </div>
+        </div>
+        {/* <LogIn href="/">Ingresar</LogIn>
+         */}
+      </Nav>
+      <Section>
+        <Hero>
+          <h1>Bienvenido a la mejor comunidad profesional para estudiantes</h1>
+          <img src="/images/hero.svg" alt="" />
+        </Hero>
+        <Form>
+          <InputWrapper>
+            <InputLabel>Correo electrónico</InputLabel>
+            <InputField>
+              <input
+                type="email"
+                onChange={(e) => setEmail(e.target.value)}
+              ></input>
+            </InputField>
+          </InputWrapper>
+          <InputWrapper>
+            <InputLabel>Contraseña</InputLabel>
+            <InputField>
+              <input
+                type={showPassword ? "text" : "password"}
+                onChange={(e) => setPassword(e.target.value)}
+              ></input>
+              <button onClick={changeShowPassword}>
+                <span>{showPassword ? "Ocultar" : "Mostrar"}</span>
+              </button>
+            </InputField>
+          </InputWrapper>
+          <ForgotPassword>
+            <a href="">
+              <span>¿Olvidaste tu contraseña?</span>
+            </a>
+          </ForgotPassword>
+          <LogInHero onClick={handleLogin}>Ingresar</LogInHero>
+          <Divider>
+            <span>o</span>
+          </Divider>
+          <SignUp onClick={handleSignUp}>¿No tienes cuenta? Registrate</SignUp>
+        </Form>
+      </Section>
+      <SecondaryHeader>
+        <h2>Encuentra la pasantía o la capacitación adecuada para ti</h2>
+        <img src="/images/layer1.svg" alt="" />
+      </SecondaryHeader>
+      <TalentFinder>
+        <h2>
+          Publica tus ofertas de pasantías o capacitaciones y recluta a los
+          mejores talentos
+        </h2>
+        <img src="/images/layer2.svg" alt="" />
+      </TalentFinder>
+      <Leading>
+        <LeadingText>
+          <div>
+            <h2>¿A quién se dirige SkillUp?</h2>
+            <span>
+              A cualquier estudiante que busque dar un paso adelante en su vida
+              profesional o todos aquellos empresarios que busquen reclutar para
+              preparar a nuevos talentos
+            </span>
+          </div>
+        </LeadingText>
+        <img src="/images/team-up.png" alt="" />
+      </Leading>
+      <JoinUs>
+        ¡Únete a SkillUp con tus compañeros de clase o afilia a tu empresa!
+      </JoinUs>
+      <Footer>
+        <img src="/images/footer.png" alt="" />
+      </Footer>
+    </Container>
   );
 };
 
@@ -218,23 +190,23 @@ const Nav = styled.div`
   }
 `;
 
-const LogIn = styled.a`
-  color: #114c5f;
-  border-radius: 60px;
-  transition-duration: 167ms;
-  font-size: 24px;
-  font-weight: 600;
-  line-height: 40px;
-  padding: 20px 42px;
-  text-align: center;
-  background-color: #f2e6cf;
-  text-decoration: none;
-  /* &:hover { */
-  /* background-color: rgba(112, 181, 249, 0.15); */
-  /* color: #0a66c2; */
-  /* text-decoration: none; */
-  /* } */
-`;
+// const LogIn = styled.a`
+// color: #114c5f;
+// border-radius: 60px;
+// transition-duration: 167ms;
+// font-size: 24px;
+// font-weight: 600;
+// line-height: 40px;
+// padding: 20px 42px;
+// text-align: center;
+// background-color: #f2e6cf;
+// text-decoration: none;
+/* &:hover { */
+/* background-color: rgba(112, 181, 249, 0.15); */
+/* color: #0a66c2; */
+/* text-decoration: none; */
+/* } */
+// `;
 
 const Section = styled.section`
   display: flex;
@@ -358,7 +330,6 @@ const LogInHero = styled.button`
   height: 100%;
   color: #fff;
   font-weight: 600;
-  /* background: transpa/ent; */
   border: none;
   font-size: 16px;
 `;
@@ -516,4 +487,15 @@ const JoinUs = styled.h2`
   }
 `;
 
-export default Landing;
+const mapStateToProps = (state) => {
+  return {
+    user: state.authSuccess.user,
+    token: state.authSuccess.token,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  logIn: (data) => dispatch(studentLogInAPI(data)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Landing);

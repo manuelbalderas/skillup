@@ -2,23 +2,22 @@ import styled from "styled-components";
 import Leftside from "./Leftside";
 import Main from "./Main";
 import { useEffect } from "react";
-import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
 
 const Feed = (props) => {
-  const [cookies, setCookie, removeCookie] = useCookies(["User", "AuthToken"]);
+  // const [cookies, setCookie, removeCookie] = useCookies(["User", "AuthToken"]);
 
   const navigate = useNavigate();
-  useEffect(() => {
-    // console.log(cookies.User);
-    if (cookies.AuthToken) {
-      setCookie("User", cookies.User);
-      setCookie("AuthToken", cookies.AuthToken);
-      navigate("/home");
-    } else {
-      navigate("/");
-    }
-  }, []);
+  // useEffect(() => {
+  // console.log(cookies.User);
+  // if (cookies.AuthToken) {
+  // setCookie("User", cookies.User);
+  // setCookie("AuthToken", cookies.AuthToken);
+  // navigate("/home");
+  // } else {
+  // navigate("/");
+  // }
+  // }, []);
   return (
     <Container>
       <Section></Section>
