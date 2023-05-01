@@ -14,6 +14,22 @@ app.use(express.json());
 // res.send("Hello world!");
 // });
 
+// get publications
+
+app.get("/publications/vacants", async (req, res) => {
+  try {
+    const vacants =
+      await pool.query(`SELECT P.id, C.company_name, C.profile_pic, P.title, P.remote, P.location, P.type
+FROM publications P
+INNER JOIN companies C
+ON P.author = C.email;`);
+
+    res.json(vacants.rows);
+  } catch (err) {
+    console.error(err);
+  }
+});
+
 // sign up
 
 app.post("/student/signup", async (req, res) => {

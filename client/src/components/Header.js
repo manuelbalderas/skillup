@@ -39,7 +39,14 @@ const Header = (props) => {
             </NavList>
             <User>
               <a>
-                <img src="/images/user.svg" alt="" />
+                <img
+                  src={
+                    props.user.profile_pic
+                      ? props.user.profile_pic
+                      : "/images/user.svg"
+                  }
+                  alt=""
+                />
                 <span>Mi perfil</span>
               </a>
             </User>
@@ -99,6 +106,10 @@ const Search = styled.div`
       border-color: #dce6f1;
       vertical-align: text-top;
     }
+
+    @media (max-width: 768px) {
+      display: none;
+    }
   }
 `;
 
@@ -133,7 +144,7 @@ const NavListWrap = styled.ul`
   display: flex;
 
   li:not(:last-child) {
-    margin-right: 1em;
+    margin-right: 2em;
   }
 
   background: #114c5f;
@@ -143,14 +154,17 @@ const NavListWrap = styled.ul`
     span:after {
       content: "";
       transform: scaleX(1);
-      border-bottom: 2px solid var(--white, #fff);
+      border-bottom: 2px solid #f2e6cf;
       bottom: 0;
       left: 0;
       position: absolute;
       transition: transform 0.2s ease-in-out;
       width: 100%;
-      border-color: rgba(0, 0, 0, 0.9);
     }
+  }
+
+  @media (max-width: 768px) {
+    justify-content: center;
   }
 `;
 

@@ -17,6 +17,8 @@ export const studentLogInAPI = (data) => {
 
     if (!payload.detail) {
       dispatch(loginSuccess(payload.user, payload.token));
+      localStorage.setItem("user", JSON.stringify(payload.user));
+      localStorage.setItem("token", JSON.stringify(payload.token));
     } else {
       // handle error
     }
@@ -37,6 +39,17 @@ export const studentSignUpAPI = (data) => {
       // handle error, poner un texto que diga el error
     }
   };
+};
+
+export const authHeader = () => {
+  const user = JSON.parse(localStorage.getItem("user"));
+  const token = JSON.parse(localStorage.getItem("token"));
+
+  if (user && token) {
+    return { "x-access-token": token };
+  } else {
+    return {};
+  }
 };
 
 // export const setUser = (payload) => ({

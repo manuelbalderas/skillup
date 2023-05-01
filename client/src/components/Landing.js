@@ -8,6 +8,9 @@ const Landing = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [user, setUser] = useState({});
+
+  // const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const navigate = useNavigate();
 
@@ -27,12 +30,15 @@ const Landing = (props) => {
   };
 
   useEffect(() => {
-    console.log(props.user, props.token);
-  }, []);
+    const user = JSON.parse(localStorage.getItem("user"));
+    setUser(user);
+    if (user) {
+      navigate("/home");
+    }
+  }, [localStorage.getItem("user")]);
 
   return (
     <Container>
-      {props.user && navigate("/home")}
       <Nav>
         <a href="/">
           <img src="/images/skillup.svg" alt="" />

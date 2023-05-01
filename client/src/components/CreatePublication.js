@@ -1,29 +1,44 @@
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const CreatePublication = (props) => {
+  const [title, setTitle] = useState("");
+  const [isRemote, setIsRemote] = useState(false);
+  const [location, setLocation] = useState("");
+  const [type, setType] = useState("");
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!props.user) {
+      // navigate("/");
+    }
+  });
+
   return (
     <Container>
       <Section></Section>
-      <h1>Recluta al mejor talento</h1>
+      <h1>Recluta y capacita al mejor talento</h1>
       <Form>
         <h2>Da con una gran cantidad de profesionales emergentes</h2>
         <InputWrapper>
-          <InputLabel>Cargo</InputLabel>
+          <InputLabel>¿Qué estás publicando?</InputLabel>
           <InputField type="email"></InputField>
         </InputWrapper>
         <InputWrapper>
-          <InputLabel>Tipo de lugar de trabajo</InputLabel>
+          <InputLabel>¿Es remoto?</InputLabel>
           <InputField></InputField>
         </InputWrapper>
         <InputWrapper>
-          <InputLabel>Ubicación del empleo</InputLabel>
+          <InputLabel>Ubicación</InputLabel>
           <InputField></InputField>
         </InputWrapper>
         <InputWrapper>
-          <InputLabel>Tipo de empleo</InputLabel>
+          <InputLabel>Tipo</InputLabel>
           <InputField></InputField>
         </InputWrapper>
-        <button>Empezar hoy mismo, gratis</button>
+        <button>Realizar publicación</button>
       </Form>
     </Container>
   );
@@ -40,10 +55,10 @@ const Container = styled.div`
   background-color: rgba(0, 0, 0, 0.05);
   text-align: center;
   h1 {
-    font-family: Roboto Light;
     color: #114c5f;
     font-size: 42px;
     margin: 20px;
+    font-weight: 400;
     @media (max-width: 768px) {
       margin-top: 0;
       font-size: 30px;
@@ -59,12 +74,8 @@ const Section = styled.section`
   text-decoration: underline;
   display: flex;
   justify-content: center;
-  h5 {
-    color: #0a66c2;
-    font-size: 14px;
-    a {
-      font-weight: 700;
-    }
+  a {
+    font-weight: 700;
   }
   p {
     font-size: 14px;
@@ -91,6 +102,7 @@ const Form = styled.div`
     line-height: 1.3;
     text-align: left;
     padding: 30px;
+    font-weight: 600;
     @media (max-width: 768px) {
       font-size: 20px;
     }
@@ -103,7 +115,6 @@ const Form = styled.div`
     padding: 14px 118px;
     font-size: 16px;
     border: none;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   }
   span {
     display: block;
@@ -127,6 +138,8 @@ const InputWrapper = styled.div`
 const InputLabel = styled.span`
   font-size: 14px;
   margin-bottom: -5px;
+  font-weight: 400;
+  color: #114c5f;
 `;
 
 const InputField = styled.input`
@@ -136,6 +149,7 @@ const InputField = styled.input`
   border: 1px solid rgba(0, 0, 0, 0.75);
   margin-top: 10px;
   padding-left: 10px;
+  outline: none;
 `;
 
 export default CreatePublication;

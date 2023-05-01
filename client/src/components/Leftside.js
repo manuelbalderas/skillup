@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { useState, useEffect } from "react";
 
 const Leftside = (props) => {
   return (
@@ -7,12 +8,24 @@ const Leftside = (props) => {
         <UserInfo>
           <CardBackground />
           <a>
-            <Photo />
-            <Link>Christian Geovany Muñoz Rodriguez</Link>
+            <Photo>
+              <img
+                src={
+                  props.user.profile_pic
+                    ? props.user.profile_pic
+                    : "/images/user.svg"
+                }
+                alt=""
+              />
+            </Photo>
+            <Link>
+              {props.user
+                ? props.user.student_name + " " + props.user.student_last_name
+                : "Usuario"}
+            </Link>
           </a>
           <AddPhotoText>
-            Estudiante en Universidad de Guadalajara | Computer Engineering |
-            Python | Data science | Artificial intelligence
+            {"Estudiante en " + props.user.university}
           </AddPhotoText>
         </UserInfo>
         <Item>
@@ -34,6 +47,7 @@ const Container = styled.div`
 
 const ArtCard = styled.div`
   text-align: center;
+  align-content: center;
   overflow: hidden;
   margin-bottom: 8px;
   background-color: rgba(242, 230, 207, 0.2);
@@ -59,18 +73,21 @@ const CardBackground = styled.div`
 
 const Photo = styled.div`
   box-shadow: none;
-  background-image: url("/images/christian.jpg");
-  width: 96px;
-  height: 96px;
-  box-sizing: border-box;
-  background-clip: content-box;
-  background-color: white;
-  background-position: center;
-  background-size: 100%;
-  background-repeat: no-repeat;
-  border: 2px solid white;
-  margin: -38px auto 12px;
-  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  img {
+    width: 96px;
+    height: 96px;
+    box-sizing: border-box;
+    background-clip: content-box;
+    background-color: white;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    border: 2px solid white;
+    margin: -38px auto 12px;
+    border-radius: 50%;
+  }
 `;
 
 const Link = styled.div`

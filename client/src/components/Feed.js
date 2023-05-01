@@ -1,28 +1,18 @@
 import styled from "styled-components";
 import Leftside from "./Leftside";
 import Main from "./Main";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Feed = (props) => {
-  // const [cookies, setCookie, removeCookie] = useCookies(["User", "AuthToken"]);
-
   const navigate = useNavigate();
-  // useEffect(() => {
-  // console.log(cookies.User);
-  // if (cookies.AuthToken) {
-  // setCookie("User", cookies.User);
-  // setCookie("AuthToken", cookies.AuthToken);
-  // navigate("/home");
-  // } else {
-  // navigate("/");
-  // }
-  // }, []);
+
   return (
     <Container>
+      {!props.user && navigate("/")}
       <Section></Section>
       <Layout>
-        <Leftside />
+        <Leftside user={props.user} />
         <Main />
       </Layout>
     </Container>
