@@ -33,9 +33,7 @@ export const studentSignUpAPI = (data) => {
 
     const payload = await response.json();
 
-    if (!payload.detail) {
-      dispatch(loginSuccess(payload.user, payload.token));
-    } else {
+    if (payload.detail) {
       // handle error, poner un texto que diga el error
     }
   };

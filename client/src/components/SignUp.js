@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { Navigate } from "react-router";
 import { connect } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { studentSignUpAPI } from "../actions";
 import styled from "styled-components";
 
@@ -14,26 +14,36 @@ const SignUp = (props) => {
   const [university, setUniversity] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     console.log(props.user);
   });
 
+  const changeShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
   const handleClick = async (e) => {
     e.preventDefault();
-    props.signUp({
-      email,
-      password,
-      name,
-      lastName,
-      country,
-      city,
-      university,
-    });
+    try {
+      props.signUp({
+        email,
+        password,
+        name,
+        lastName,
+        country,
+        city,
+        university,
+      });
+      navigate("/");
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   return (
     <Container>
-      {props.user && console.log("Xd")}
       <img src="/images/sign-up-logo.svg" />
       <h1>Estás a unos pasos de cambiar tu futuro</h1>
       <Form>
@@ -46,7 +56,13 @@ const SignUp = (props) => {
         <InputWrapper>
           <InputLabel>Contraseña</InputLabel>
           <InputField>
-            <input onChange={(e) => setPassword(e.target.value)}></input>
+            <input
+              type={showPassword ? "text" : "password"}
+              onChange={(e) => setPassword(e.target.value)}
+            ></input>
+            <button onClick={changeShowPassword}>
+              <span>{showPassword ? "Ocultar" : "Mostrar"}</span>
+            </button>
           </InputField>
         </InputWrapper>
         <InputWrapper>
@@ -79,22 +95,23 @@ const SignUp = (props) => {
             <input onChange={(e) => setUniversity(e.target.value)}></input>
           </InputField>
         </InputWrapper>
-        <button onClick={handleClick}>Aceptar y unirse</button>
-        <span style={{ color: "#114C5F", fontSize: 16 }}>
-          ¿Ya eres miembro de SkillUp?
-          <a style={{ color: "#0799B6", fontWeight: 600 }}> Iniciar sesión</a>
-        </span>
-        <span
-          style={{
-            color: "#114C5F",
-            fontSize: 14,
-            margin: 10,
-            paddingBottom: 20,
-          }}
-        >
-          ¿Quieres crear un perfil para tu empresa?
-          <a style={{ color: "#0799B6", fontWeight: 600 }}> Hazlo acá</a>
-        </span>
+        <Accept>
+          <button onClick={handleClick}>Aceptar y unirse</button>
+        </Accept>
+        <BottomText>
+          <LogIn>
+            <span>
+              ¿Ya eres miembro de SkillUp?
+              <a>Iniciar sesión</a>
+            </span>
+          </LogIn>
+          <Company>
+            <span>
+              ¿Quieres crear un perfil para tu empresa?
+              <a> Hazlo acá</a>
+            </span>
+          </Company>
+        </BottomText>
       </Form>
     </Container>
   );
@@ -105,19 +122,18 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  max-width: 100%;
-  height: 100vh;
   margin: 0;
   background-color: #f3f2f0;
   text-align: center;
   img {
-    margin-top: 10px;
+    margin-top: 1em;
   }
   h1 {
     font-weight: 200;
     color: #114c5f;
     font-size: 32px;
-    margin: 20px;
+    margin-top: 20px;
+    margin-bottom: 30px;
     @media (max-width: 768px) {
       font-size: 20px;
     }
@@ -126,13 +142,84 @@ const Container = styled.div`
 
 const Form = styled.div`
   background-color: white;
+  display: flex;
+  flex-direction: column;
   width: 462px;
-  /* height: 100%; */
+  align-items: center;
   border-radius: 13px;
-  margin: 10px;
-  @media (max-width: 768px) {
-    /* width: 80%; */
+  margin-bottom: 1em;
+`;
+
+const BottomText = styled.div`
+  span {
+    display: block;
   }
+`;
+
+const LogIn = styled.div`
+  span {
+    color: #114c5f;
+    font-size: 16;
+  }
+  a {
+    color: #0799b6;
+    font-weight: 600;
+  }
+`;
+
+const Company = styled(LogIn)`
+  span {
+    font-size: 14;
+    margin: 10px;
+    padding-bottom: 20px;
+  }
+`;
+
+const InputWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-top: 15px;
+  text-align: left;
+  &:first-child {
+    margin-top: 30px;
+  }
+`;
+
+const InputLabel = styled.span`
+  margin-bottom: 10px;
+  font-size: 14px;
+`;
+
+const InputField = styled.a`
+  width: 342px;
+  height: 32px;
+  padding: 2px;
+  border: 1px solid rgba(0, 0, 0, 0.75);
+  border-radius: 4px;
+  display: flex;
+  /* justify-content: space-between; */
+  /* align-items: center; */
+  input {
+    flex: 1;
+    border: none;
+    outline: none;
+    height: 80%;
+    padding-left: 10px;
+  }
+
+  button {
+    background: transparent;
+    border: none;
+    span {
+      font-size: 16;
+      color: #114c5f;
+      padding-left: 10px;
+      font-weight: 600;
+    }
+  }
+`;
+
+const Accept = styled.div`
   button {
     margin: 15px auto;
     color: white;
@@ -141,43 +228,6 @@ const Form = styled.div`
     padding: 14px 118px;
     font-size: 16px;
     border: none;
-    /* box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); */
-  }
-  span {
-    display: block;
-  }
-`;
-
-const InputWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  text-align: start;
-  margin-left: 40px;
-  margin-top: 15px;
-  &:first-child {
-    margin-top: 30px;
-  }
-  @media (max-width: 768px) {
-    width: 100%;
-  }
-`;
-
-const InputLabel = styled.span`
-  font-size: 14px;
-  margin-bottom: -5px;
-`;
-
-const InputField = styled.a`
-  width: 342px;
-  height: 32px;
-  border-radius: 4px;
-  border: 1px solid rgba(0, 0, 0, 0.75);
-  margin-top: 10px;
-  padding-left: 10px;
-  /* outline: none; */
-  input {
-    width: 100%;
-    margin: auto;
   }
 `;
 
