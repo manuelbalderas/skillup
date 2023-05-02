@@ -43,10 +43,6 @@ app.post("/student/signup", async (req, res) => {
       `INSERT INTO students(email, hashed_password, student_name, student_last_name, country, city, university) VALUES ($1, $2, $3, $4, $5, $6, $7)`,
       [email, hashedPassword, name, lastName, country, city, university]
     );
-
-    const token = jwt.sign({ email }, "secret", { expiresIn: "7d" });
-
-    res.json({ email, token });
   } catch (err) {
     console.error(err);
     if (err) {

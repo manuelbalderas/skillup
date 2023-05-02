@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { connect } from "react-redux";
 import { studentLogInAPI } from "../actions";
 
@@ -8,37 +8,27 @@ const Landing = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [user, setUser] = useState({});
 
   // const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  const navigate = useNavigate();
 
   const handleLogin = (e) => {
     e.preventDefault();
     props.logIn({ email, password });
-    console.log(props.user, props.token);
+    console.log(props.user);
   };
 
   const handleSignUp = (e) => {
     e.preventDefault();
-    navigate("/sign-up");
+    <Navigate to="/sign-up" />;
   };
 
   const changeShowPassword = () => {
     setShowPassword(!showPassword);
   };
 
-  useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user"));
-    setUser(user);
-    if (user) {
-      navigate("/home");
-    }
-  }, [localStorage.getItem("user")]);
-
   return (
     <Container>
+      {props.user && <Navigate to="/home" />}
       <Nav>
         <a href="/">
           <img src="/images/skillup.svg" alt="" />
@@ -272,7 +262,7 @@ const Form = styled.div`
     flex-direction: column;
     align-items: center;
     align-content: center;
-
+    justify-content: center;
     /* margin-left: 20px; */
   }
 `;
@@ -497,8 +487,7 @@ const JoinUs = styled.h2`
 
 const mapStateToProps = (state) => {
   return {
-    user: state.authSuccess.user,
-    token: state.authSuccess.token,
+    user: state.userState.user,
   };
 };
 

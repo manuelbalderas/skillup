@@ -233,8 +233,7 @@ const Accept = styled.div`
 
 const mapStateToProps = (state) => {
   return {
-    user: state.authSuccess.user,
-    token: state.authSuccess.token,
+    user: state.user,
   };
 };
 

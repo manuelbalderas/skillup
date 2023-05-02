@@ -1,5 +1,5 @@
+import { connect } from "react-redux";
 import styled from "styled-components";
-import { useState, useEffect } from "react";
 
 const Leftside = (props) => {
   return (
@@ -9,14 +9,11 @@ const Leftside = (props) => {
           <CardBackground />
           <a>
             <Photo>
-              <img
-                src={
-                  props.user.profile_pic
-                    ? props.user.profile_pic
-                    : "/images/user.svg"
-                }
-                alt=""
-              />
+              {props.user && props.user.profile_pic ? (
+                <img src={props.user.profile_pic} alt="" />
+              ) : (
+                <img src="/images/user.svg" alt="" />
+              )}
             </Photo>
             <Link>
               {props.user
@@ -25,7 +22,9 @@ const Leftside = (props) => {
             </Link>
           </a>
           <AddPhotoText>
-            {"Estudiante en " + props.user.university}
+            {props.user
+              ? "Estudiante en " + props.user.university
+              : "Estudiante"}
           </AddPhotoText>
         </UserInfo>
         <Item>
@@ -126,4 +125,12 @@ const Item = styled.a`
   }
 `;
 
-export default Leftside;
+const mapStateToProps = (state) => {
+  return {
+    user: state.userState.user,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => ({});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Leftside);

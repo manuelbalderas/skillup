@@ -1,4 +1,6 @@
 import styled from "styled-components";
+import { signOutAPI } from "../actions";
+import { connect } from "react-redux";
 
 const Header = (props) => {
   return (
@@ -39,16 +41,19 @@ const Header = (props) => {
             </NavList>
             <User>
               <a>
-                <img
-                  src={
-                    props.user.profile_pic
-                      ? props.user.profile_pic
-                      : "/images/user.svg"
-                  }
-                  alt=""
-                />
-                <span>Mi perfil</span>
+                {props.user && props.user.profile_pic ? (
+                  <img src={props.user.profile_pic} alt="" />
+                ) : (
+                  <img src="/images/user.svg" alt="" />
+                )}
+                <span>
+                  Mi perfil
+                  <img src="/images/down-icon.svg" alt="" />
+                </span>
               </a>
+              <SignOut onClick={() => props.signOut()}>
+                <a>Cerrar sesión</a>
+              </SignOut>
             </User>
           </NavListWrap>
         </Nav>
@@ -203,6 +208,19 @@ const NavList = styled.li`
   }
 `;
 
+const SignOut = styled.div`
+  position: absolute;
+  top: 45px;
+  background: white;
+  border-radius: 0 0 5px 5px;
+  width: 100px;
+  height: 40px;
+  font-size: 16px;
+  transition-duration: 167ms;
+  text-align: center;
+  display: none;
+`;
+
 const User = styled(NavList)`
   a > svg,
   img {
@@ -213,6 +231,24 @@ const User = styled(NavList)`
     display: flex;
     align-items: center;
   }
+
+  &:hover {
+    ${SignOut} {
+      align-items: center;
+      display: flex;
+      justify-content: center;
+    }
+  }
 `;
 
-export default Header;
+const mapStateToProps = (state) => {
+  return {
+    user: state.userState.user,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  signOut: () => dispatch(signOutAPI()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Header);

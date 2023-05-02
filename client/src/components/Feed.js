@@ -1,18 +1,16 @@
 import styled from "styled-components";
 import Leftside from "./Leftside";
 import Main from "./Main";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
+import { connect } from "react-redux";
 
 const Feed = (props) => {
-  const navigate = useNavigate();
-
   return (
     <Container>
-      {!props.user && navigate("/")}
+      {!props.user && <Navigate to="/" />}
       <Section></Section>
       <Layout>
-        <Leftside user={props.user} />
+        <Leftside />
         <Main />
       </Layout>
     </Container>
@@ -65,4 +63,12 @@ const Layout = styled.div`
   }
 `;
 
-export default Feed;
+const mapStateToProps = (state) => {
+  return {
+    user: state.userState.user,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => ({});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Feed);

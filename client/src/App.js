@@ -1,33 +1,28 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import Landing from "./components/Landing";
 import Header from "./components/Header";
 import Feed from "./components/Feed";
 import SignUp from "./components/SignUp";
 import CreatePublication from "./components/CreatePublication";
+import { getUserAuth } from "./actions";
+import { connect } from "react-redux";
 
-function App() {
-  const [user, setUser] = useState({});
-
+function App(props) {
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user"));
-    setUser(user);
-  }, [localStorage.getItem("user")]);
-
+    props.getUserAuth();
+  }, []);
   return (
     <div className="App">
       <Router>
         <Routes>
           <Route exact path="/" element={<Landing />}></Route>
-          <Route
-            path="/home"
-            element={[<Header user={user} />, <Feed user={user} />]}
-          ></Route>
+          <Route path="/home" element={[<Header />, <Feed />]}></Route>
           <Route path="/sign-up" element={<SignUp />}></Route>
           <Route
             path="/create"
-            element={[<Header user={user} />, <CreatePublication />]}
+            element={[<Header />, <CreatePublication />]}
           ></Route>
           {/* <Route path="/home" element={[<Header />, <Home />]}></Route> */}
         </Routes>
@@ -36,4 +31,12 @@ function App() {
   );
 }
 
-export default App;
+const mapStateToProps = (state) => {
+  return {};
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  getUserAuth: () => dispatch(getUserAuth()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

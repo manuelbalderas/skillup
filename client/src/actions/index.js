@@ -1,8 +1,8 @@
-import { SET_USER, SET_TOKEN, AUTH_SUCCESS } from "./actionType";
+import { SET_USER, LOG_OUT } from "./actionType";
 
-export const loginSuccess = (user, token) => ({
-  type: AUTH_SUCCESS,
-  payload: { user, token },
+export const setUser = (user) => ({
+  type: SET_USER,
+  user: user,
 });
 
 export const studentLogInAPI = (data) => {
@@ -16,9 +16,8 @@ export const studentLogInAPI = (data) => {
     const payload = await response.json();
 
     if (!payload.detail) {
-      dispatch(loginSuccess(payload.user, payload.token));
+      dispatch(setUser(payload.user));
       localStorage.setItem("user", JSON.stringify(payload.user));
-      localStorage.setItem("token", JSON.stringify(payload.token));
     } else {
       // handle error
     }
@@ -41,15 +40,21 @@ export const studentSignUpAPI = (data) => {
   };
 };
 
-export const authHeader = () => {
-  const user = JSON.parse(localStorage.getItem("user"));
-  const token = JSON.parse(localStorage.getItem("token"));
+export const signOutAPI = () => {
+  return async (dispatch) => {
+    dispatch(setUser(null));
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+  };
+};
 
-  if (user && token) {
-    return { "x-access-token": token };
-  } else {
-    return {};
-  }
+export const getUserAuth = () => {
+  return (dispatch) => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    if (user) {
+      dispatch(setUser(user));
+    }
+  };
 };
 
 // export const setUser = (payload) => ({
