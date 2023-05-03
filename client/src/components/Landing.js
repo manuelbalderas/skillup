@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useState, useEffect } from "react";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { connect } from "react-redux";
 import { studentLogInAPI } from "../actions";
 
@@ -8,6 +8,8 @@ const Landing = (props) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+
+  const navigate = useNavigate();
 
   // const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -19,7 +21,7 @@ const Landing = (props) => {
 
   const handleSignUp = (e) => {
     e.preventDefault();
-    <Navigate to="/sign-up" />;
+    navigate("/sign-up");
   };
 
   const changeShowPassword = () => {
@@ -28,7 +30,7 @@ const Landing = (props) => {
 
   return (
     <Container>
-      {props.user && <Navigate to="/home" />}
+      {props.user && navigate("/home")}
       <Nav>
         <a href="/">
           <img src="/images/skillup.svg" alt="" />

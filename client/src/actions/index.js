@@ -1,8 +1,8 @@
 import { SET_USER, LOG_OUT } from "./actionType";
 
-export const setUser = (user) => ({
+export const setUser = (payload) => ({
   type: SET_USER,
-  user: user,
+  user: payload,
 });
 
 export const studentLogInAPI = (data) => {
@@ -56,13 +56,3 @@ export const getUserAuth = () => {
     }
   };
 };
-
-// export const setUser = (payload) => ({
-// type: SET_USER,
-// user: payload,
-// });
-
-// export const setAuthToken = (authToken) => ({
-// type: SET_TOKEN,
-// token: authToken,
-// });
