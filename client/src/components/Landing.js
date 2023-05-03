@@ -33,7 +33,7 @@ const Landing = (props) => {
         <a href="/">
           <img src="/images/skillup.svg" alt="" />
         </a>
-        <div>
+        {/* <div>
           <div>
             <a href="">
               <img src="/images/education.svg" alt="" />
@@ -54,7 +54,7 @@ const Landing = (props) => {
               <span>Registrarse</span>
             </a>
           </div>
-        </div>
+        </div> */}
         {/* <LogIn href="/">Ingresar</LogIn>
          */}
       </Nav>
@@ -188,23 +188,22 @@ const Nav = styled.div`
   }
 `;
 
-// const LogIn = styled.a`
-// color: #114c5f;
-// border-radius: 60px;
-// transition-duration: 167ms;
-// font-size: 24px;
-// font-weight: 600;
-// line-height: 40px;
-// padding: 20px 42px;
-// text-align: center;
-// background-color: #f2e6cf;
-// text-decoration: none;
-/* &:hover { */
-/* background-color: rgba(112, 181, 249, 0.15); */
-/* color: #0a66c2; */
-/* text-decoration: none; */
-/* } */
-// `;
+const LogIn = styled.a`
+ color: #114c5f;
+ border-radius: 60px;
+ transition-duration: 167ms;
+ font-size: 24px;
+ font-weight: 600;
+ line-height: 40px;
+padding: 20px 42px;
+ text-align: center;
+ background-color: #f2e6cf;
+ text-decoration: none;
+ &:hover { */
+ background-color: rgba(112, 181, 249, 0.15); */
+ color: #0a66c2; */
+ text-decoration: none; */
+ }  `;
 
 const Section = styled.section`
   display: flex;
