@@ -1,13 +1,11 @@
 import { combineReducers } from "redux";
 
 import userReducer from "./userReducer";
-// import userReducer from "./userReducer";
-// import tokenReducer from "./tokenReducer";
+import publicationReducer from "./publicationReducer";
 
 const rootReducer = combineReducers({
   userState: userReducer,
-  // userState: userReducer,
-  // tokenState: tokenReducer,
+  publicationState: publicationReducer,
 });
 
 export default rootReducer;

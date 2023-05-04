@@ -16,7 +16,7 @@ app.use(express.json());
 
 // get publications
 
-app.get("/publications/vacants", async (req, res) => {
+app.get("/publications", async (req, res) => {
   try {
     const vacants =
       await pool.query(`SELECT P.id, C.company_name, C.profile_pic, P.title, P.remote, P.location, P.type
@@ -24,7 +24,10 @@ FROM publications P
 INNER JOIN companies C
 ON P.author = C.email;`);
 
-    res.json(vacants.rows);
+    res.json({
+      lenght: vacants.rows.length,
+      data: vacants.rows,
+    });
   } catch (err) {
     console.error(err);
   }

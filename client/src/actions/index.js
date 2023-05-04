@@ -1,8 +1,13 @@
-import { SET_USER, LOG_OUT } from "./actionType";
+import { SET_USER, GET_PUBLICATIONS } from "./actionType";
 
 export const setUser = (payload) => ({
   type: SET_USER,
   user: payload,
+});
+
+export const getPublications = (payload) => ({
+  type: GET_PUBLICATIONS,
+  payload: payload,
 });
 
 export const studentLogInAPI = (data) => {
@@ -54,5 +59,16 @@ export const getUserAuth = () => {
     if (user) {
       dispatch(setUser(user));
     }
+  };
+};
+
+export const getArticlesAPI = () => {
+  return async (dispatch) => {
+    const response = await fetch(`http://localhost:8000/publications`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+
+    const payload = await response.json();
   };
 };

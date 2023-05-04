@@ -21,24 +21,24 @@ const Header = (props) => {
         </Search>
         <Nav>
           <NavListWrap>
-            <NavList className="active">
-              <a>
+            <NavList className={props.tab === "Trainings" ? "active" : null}>
+              <a href="/trainings">
                 <img src="/images/education.svg" alt="" />
                 <span>Capacitaciones</span>
               </a>
             </NavList>
-            <NavList>
-              <a>
+            <NavList className={props.tab === "Interships" ? "active" : null}>
+              <a href="/interships">
                 <img src="/images/portfolio.svg" alt="" />
                 <span>Pasantías</span>
               </a>
             </NavList>
-            <NavList>
+            {/* <NavList>
               <a>
                 <img src="/images/bell.svg" alt="" />
                 <span>Notificaciones</span>
               </a>
-            </NavList>
+            </NavList> */}
             <User>
               <a>
                 {props.user && props.user.profile_pic ? (
@@ -48,7 +48,7 @@ const Header = (props) => {
                 )}
                 <span>
                   Mi perfil
-                  <img src="/images/down-icon.svg" alt="" />
+                  {/* <img src="/images/down-icon.svg" alt="" /> */}
                 </span>
               </a>
               <SignOut onClick={() => props.signOut()}>
@@ -211,14 +211,19 @@ const NavList = styled.li`
 const SignOut = styled.div`
   position: absolute;
   top: 45px;
-  background: white;
-  border-radius: 0 0 5px 5px;
+  background: #114c5f;
+  color: #f2e6cf;
+  border: 2px solid #f2e6cf;
+  border-radius: 5px;
   width: 100px;
   height: 40px;
   font-size: 16px;
   transition-duration: 167ms;
   text-align: center;
   display: none;
+  &:hover {
+    color: white;
+  }
 `;
 
 const User = styled(NavList)`

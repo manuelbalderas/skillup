@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { studentSignUpAPI } from "../actions";
+import { studentSignUpAPI } from "../../actions";
 import styled from "styled-components";
 
 const SignUp = (props) => {
