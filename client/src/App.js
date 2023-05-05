@@ -20,20 +20,32 @@ function App(props) {
           <Route exact path="/" element={<Landing />}></Route>
           <Route
             path="/home"
-            element={[<Header tab="Home" />, <Feed />]}
+            element={[
+              <Header key="home-header" tab="Home" />,
+              <Feed key="home-feed" />,
+            ]}
           ></Route>
           <Route
             path="/trainings"
-            element={[<Header tab="Trainings" />, <Feed />]}
+            element={[
+              <Header key="trainings-header" tab="Trainings" />,
+              <Feed key="trainings-feed" tab="Trainings" />,
+            ]}
           ></Route>
           <Route
-            path="/interships"
-            element={[<Header tab="Interships" />, <Feed />]}
+            path="/jobs"
+            element={[
+              <Header key="interships-header" tab="Jobs" />,
+              <Feed key="interships-header" tab="Jobs" />,
+            ]}
           ></Route>
           <Route path="/sign-up" element={<SignUp />}></Route>
           <Route
             path="/create"
-            element={[<Header />, <CreatePublication />]}
+            element={[
+              <Header key="create-header" />,
+              <CreatePublication key="create-publication" />,
+            ]}
           ></Route>
         </Routes>
       </Router>

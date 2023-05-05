@@ -40,18 +40,15 @@ const Leftside = (props) => {
 
 const Container = styled.div`
   grid-area: leftside;
-  width: 300px;
-  height: 320px;
 `;
 
 const ArtCard = styled.div`
   text-align: center;
-  align-content: center;
   overflow: hidden;
   margin-bottom: 8px;
   background-color: rgba(242, 230, 207, 0.2);
   border-radius: 5px;
-  /* transition: box-shadow 83ms; */
+  transition: box-shadow 83ms;
   position: relative;
   border: none;
   box-shadow: 0px 0px 0px 1.33333px rgba(0, 0, 0, 0.08);
@@ -60,14 +57,19 @@ const ArtCard = styled.div`
 const UserInfo = styled.div`
   border-bottom: 1px solid rgba(0, 0, 0, 0.15);
   padding: 12px 12px 16px;
+  word-wrap: break-word;
+  word-break: break-word;
 `;
 
 const CardBackground = styled.div`
   background: url("/images/background.png");
   background-position: center;
-  background-size: 300px;
+  background-size: 462px;
   height: 75px;
   margin: -12px -12px 0;
+  @media (max-width: 768px) {
+    height: 54px;
+  }
 `;
 
 const Photo = styled.div`

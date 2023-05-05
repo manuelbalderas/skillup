@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { getPublicationsAPI } from "../../actions";
 import { connect } from "react-redux";
 
-const Main = (props) => {
+const Trainings = (props) => {
   useEffect(() => {
     props.getPublications();
   }, []);
@@ -17,7 +17,7 @@ const Main = (props) => {
       ) : (
         <Container>
           <Publications>
-            <Title href="">Publicaciones</Title>
+            <Title href="">Capacitaciones</Title>
             {props.publications.length > 0 &&
               props.publications.map((publication, key) => (
                 <Publication key={key}>
@@ -139,4 +139,4 @@ const mapDispatchToProps = (dispatch) => ({
   getPublications: () => dispatch(getPublicationsAPI()),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Main);
+export default connect(mapStateToProps, mapDispatchToProps)(Trainings);

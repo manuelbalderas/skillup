@@ -1,18 +1,25 @@
 import styled from "styled-components";
 import Leftside from "./Leftside";
+import Trainings from "./Trainings";
+import Jobs from "./Jobs";
 import Main from "./Main";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import { connect } from "react-redux";
 
 const Feed = (props) => {
-  const navigate = useNavigate();
   return (
     <Container>
-      {!props.user && navigate("/")}
+      {/* {!props.user && <Navigate to="/" />} */}
       <Section></Section>
       <Layout>
         <Leftside />
-        <Main />
+        {props.tab === "Trainings" ? (
+          <Trainings />
+        ) : props.tab === "Jobs" ? (
+          <Jobs />
+        ) : (
+          <Main />
+        )}
       </Layout>
     </Container>
   );
@@ -39,8 +46,8 @@ const Section = styled.section`
     }
   }
   p {
-    font-size: 14px;
     color: #434649;
+    font-size: 14px;
     font-weight: 600;
   }
   @media (max-width: 768px) {
@@ -52,10 +59,10 @@ const Section = styled.section`
 const Layout = styled.div`
   display: grid;
   grid-template-areas: "leftside main";
-  grid-template-columns: minmax(0, 5fr) minmax(0, 12fr); // minmax(300px, 7fr);
+  grid-template-columns: minmax(0, 4fr) minmax(0, 12fr);
   column-gap: 25px;
   row-gap: 25px;
-  /* grid-template-row: auto; */
+  grid-template-rows: auto;
   margin: 25px 0;
   @media (max-width: 768px) {
     display: flex;

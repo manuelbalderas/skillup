@@ -21,8 +21,8 @@ export const studentLogInAPI = (data) => {
     const payload = await response.json();
 
     if (!payload.detail) {
-      dispatch(setUser(payload.user));
       localStorage.setItem("user", JSON.stringify(payload.user));
+      dispatch(setUser(payload.user));
     } else {
       // handle error
     }
@@ -49,7 +49,30 @@ export const signOutAPI = () => {
   return async (dispatch) => {
     dispatch(setUser(null));
     localStorage.removeItem("user");
-    localStorage.removeItem("token");
+  };
+};
+
+export const getPublicationsAPI = () => {
+  return async (dispatch) => {
+    const response = await fetch(`http://localhost:8000/publications`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+    let payload;
+
+    const q = await response.json();
+
+    if (Array.isArray(q)) {
+      payload = q;
+    } else if (typeof q === "object" && q !== null) {
+      payload = [q];
+    }
+
+    if (q.lenght === 0) {
+      // handle error
+    } else {
+      dispatch(getPublications(payload));
+    }
   };
 };
 
@@ -59,16 +82,5 @@ export const getUserAuth = () => {
     if (user) {
       dispatch(setUser(user));
     }
-  };
-};
-
-export const getArticlesAPI = () => {
-  return async (dispatch) => {
-    const response = await fetch(`http://localhost:8000/publications`, {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-    });
-
-    const payload = await response.json();
   };
 };

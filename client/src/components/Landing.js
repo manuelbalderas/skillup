@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate, Navigate } from "react-router-dom";
 import { connect } from "react-redux";
 import { studentLogInAPI } from "../actions";
 
@@ -10,8 +10,6 @@ const Landing = (props) => {
   const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
-
-  // const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -30,7 +28,7 @@ const Landing = (props) => {
 
   return (
     <Container>
-      {props.user && navigate("/home")}
+      {props.user && <Navigate to="/home" />}
       <Nav>
         <a href="/">
           <img src="/images/skillup.svg" alt="" />
@@ -190,22 +188,23 @@ const Nav = styled.div`
   }
 `;
 
-const LogIn = styled.a`
- color: #114c5f;
- border-radius: 60px;
- transition-duration: 167ms;
- font-size: 24px;
- font-weight: 600;
- line-height: 40px;
-padding: 20px 42px;
- text-align: center;
- background-color: #f2e6cf;
- text-decoration: none;
- &:hover { */
- background-color: rgba(112, 181, 249, 0.15); */
- color: #0a66c2; */
- text-decoration: none; */
- }  `;
+// const LogIn = styled.a`
+//   color: #114c5f;
+//   border-radius: 60px;
+//   transition-duration: 167ms;
+//   font-size: 24px;
+//   font-weight: 600;
+//   line-height: 40px;
+//   padding: 20px 42px;
+//   text-align: center;
+//   background-color: #f2e6cf;
+//   text-decoration: none;
+//   &:hover {
+//     background-color: rgba(112, 181, 249, 0.15);
+//     color: #0a66c2;
+//     text-decoration: none;
+//   }
+// `;
 
 const Section = styled.section`
   display: flex;

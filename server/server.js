@@ -1,6 +1,6 @@
 const PORT = process.env.PORT || 8000;
 const express = require("express");
-const { v4: uuidv4 } = require("uuid");
+const { v4: uuidv4, validate } = require("uuid");
 const cors = require("cors");
 const app = express();
 const pool = require("./db");
@@ -24,10 +24,7 @@ FROM publications P
 INNER JOIN companies C
 ON P.author = C.email;`);
 
-    res.json({
-      lenght: vacants.rows.length,
-      data: vacants.rows,
-    });
+    res.json(vacants.rows);
   } catch (err) {
     console.error(err);
   }

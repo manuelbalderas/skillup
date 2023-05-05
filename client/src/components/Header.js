@@ -27,10 +27,10 @@ const Header = (props) => {
                 <span>Capacitaciones</span>
               </a>
             </NavList>
-            <NavList className={props.tab === "Interships" ? "active" : null}>
-              <a href="/interships">
+            <NavList className={props.tab === "Jobs" ? "active" : null}>
+              <a href="/jobs">
                 <img src="/images/portfolio.svg" alt="" />
-                <span>Pasantías</span>
+                <span>Empleos</span>
               </a>
             </NavList>
             {/* <NavList>
