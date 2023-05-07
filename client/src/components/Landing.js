@@ -20,7 +20,7 @@ const Landing = (props) => {
   const handleSignUp = (e) => {
     e.preventDefault();
     navigate("/sign-up");
-  };
+  };  
 
   const changeShowPassword = () => {
     setShowPassword(!showPassword);
@@ -461,6 +461,7 @@ const LeadingText = styled.div`
     font-size: 40px;
     color: #114c5f;
     font-weight: 200;
+    margin-bottom: 50px;
   }
   span {
     color: #000;

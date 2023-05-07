@@ -27,7 +27,7 @@ const Main = (props) => {
                       publication.profile_pic
                         ? publication.profile_pic
                         : "/images/spotify.png"
-                    }
+                    } draggable="false"
                   />
                   <div>
                     <PublicationTitle>{publication.title}</PublicationTitle>
@@ -40,7 +40,7 @@ const Main = (props) => {
                     <Type>{publication.type}</Type>
                   </div>
                   <button>
-                    <img src="/images/save-icon.svg" alt="" />
+                    <img src="/images/save-icon.svg" alt="" draggable="false"/>
                   </button>
                 </Publication>
               ))}
@@ -53,7 +53,7 @@ const Main = (props) => {
 
 const Container = styled.div`
   grid-area: main;
-  /* width: 1010px; */
+  width: 1010px;
   /* height: 1150px; */
 `;
 
@@ -76,26 +76,31 @@ const Title = styled.a`
 `;
 
 const Publication = styled.div`
-  height: 300px;
+  height: 275px;
   display: flex;
-  align-items: center;
+
   border-bottom: 1px solid rgba(0, 0, 0, 0.15);
   &:last-child {
     border-bottom: none;
   }
+  img {
+    margin-top: 2.5em;
+    align-items: top;
+  }
   div {
+    margin-top: 2em;
     display: flex;
     flex-direction: column;
   }
   button {
-    width: 47px;
     display: flex;
-    align-items: start;
     background: transparent;
     border: none;
+
+    margin-bottom: auto;
+    margin-left: auto;
     &:hover {
       background: black;
-    }
   }
 `;
 
