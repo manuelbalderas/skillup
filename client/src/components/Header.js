@@ -1,8 +1,10 @@
 import styled from "styled-components";
 import { signOutAPI } from "../actions";
+import { useNavigate } from "react-router-dom";
 import { connect } from "react-redux";
 
 const Header = (props) => {
+  const navigate = useNavigate();
   return (
     <Container>
       <Content>
@@ -51,7 +53,7 @@ const Header = (props) => {
                   {/* <img src="/images/down-icon.svg" alt="" /> */}
                 </span>
               </a>
-              <SignOut onClick={() => props.signOut()}>
+              <SignOut onClick={() => props.signOut() && navigate("/")}>
                 <a>Cerrar sesión</a>
               </SignOut>
             </User>
