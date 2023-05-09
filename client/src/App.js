@@ -4,8 +4,9 @@ import { useEffect } from "react";
 import Landing from "./components/Landing";
 import Header from "./components/Header";
 import Feed from "./components/student/Feed";
-import SignUp from "./components/student/SignUp";
+import StudentSignUp from "./components/student/SignUp";
 import CreatePublication from "./components/company/CreatePublication";
+import CompanySignUp from "./components/company/SignUp";
 import { getUserAuth } from "./actions";
 import { connect } from "react-redux";
 
@@ -39,7 +40,8 @@ function App(props) {
               <Feed key="interships-header" tab="Jobs" />,
             ]}
           ></Route>
-          <Route path="/sign-up" element={<SignUp />}></Route>
+          <Route path="/student/sign-up" element={<StudentSignUp />}></Route>
+          <Route path="/company/sign-up" element={<CompanySignUp/>}></Route>
           <Route
             path="/create"
             element={[

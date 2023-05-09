@@ -19,7 +19,7 @@ const Landing = (props) => {
 
   const handleSignUp = (e) => {
     e.preventDefault();
-    navigate("/sign-up");
+    navigate("/student/sign-up");
   };  
 
   const changeShowPassword = () => {
