@@ -51,6 +51,24 @@ app.post("/student/signup", async (req, res) => {
   }
 });
 
+app.post("/company/signup", async (req, res) => {
+  const { email, password, companyName, address, phoneNumber } = req.body;
+  const salt = bcrypt.genSaltSync(10);
+  const hashedPassword = bcrypt.hashSync(password, salt);
+
+  try {
+    const signUp = await pool.query(
+      `INSERT INTO companies(email, hashed_password, company_name, company_adress, phone_number) VALUES($1, $2, $3, $4, $5)`,
+      [email, hashedPassword, companyName, address, phoneNumber]
+    );
+  } catch (err) {
+    console.error(err);
+    if (err) {
+      res.json({ detail: err.detail });
+    }
+  }
+});
+
 app.post("/student/login", async (req, res) => {
   const { email, password } = req.body;
   try {
@@ -63,9 +81,30 @@ app.post("/student/login", async (req, res) => {
       password,
       users.rows[0].hashed_password
     );
-    const token = jwt.sign({ email }, "secret", { expiresIn: "7d" });
     if (success) {
-      res.json({ user: users.rows[0], token });
+      res.json({ user: users.rows[0] });
+    } else {
+      res.json({ detail: "Usuario o contraseña incorrectos." });
+    }
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+app.post("/company/login", async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    const users = await pool.query(`SELECT * FROM companies WHERE email = $1`, [
+      email,
+    ]);
+    if (!users.rows.length)
+      return res.json({ detail: "Usuario o contraseña incorrectos." });
+    const success = await bcrypt.compare(
+      password,
+      users.rows[0].hashed_password
+    );
+    if (success) {
+      res.json({ user: users.rows[0] });
     } else {
       res.json({ detail: "Usuario o contraseña incorrectos." });
     }

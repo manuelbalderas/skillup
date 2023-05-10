@@ -1,92 +1,95 @@
 import { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
-
+import { companySignUpAPI } from "../../actions";
 import styled from "styled-components";
 
 //no se si tenia que cambiar el nombre del email y de la contrasenia
 const SignUp = (props) => {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [companyName, setCompanyName] = useState("");
-    const [address, setAdress] = useState("");
-    const [phoneNumber, setPhoneNumber] = useState("");
-    const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [companyName, setCompanyName] = useState("");
+  const [address, setAdress] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
-    useEffect(() => {
-        console.log(props.user);
-    });
-    
-    const changeShowPassword = () => {
-        setShowPassword(!showPassword);
-    };
-    
-    const handleClick = async (e) => {
-        e.preventDefault();
-        // try {
-        //   props.signUp({ //me quedo duda con el nombre ya que en el signup de estudiante aqui lo tienes escrito de esta manera, no se si haya problemas 
-        //     email,
-        //     password,
-        //     company_name,
-        //     address,
-        //     telephone,
-        // });
-        navigate("/");
-    // } catch (err) {
-    //     console.error(err);
-    // }
-    };
+  useEffect(() => {
+    console.log(props.user);
+  });
 
-    return (
-        <Container>
-        <img src="/images/sign-up-logo.svg" />
-        <h1>Estás a unos pasos de cambiar el futuro de miles de estudiantes</h1>
-        <Form>
-            <InputWrapper>
-            <InputLabel>Email</InputLabel>
-            <InputField>
-                <input onChange={(e) => setEmail(e.target.value)}></input>
-            </InputField>
-            </InputWrapper>
-            <InputWrapper>
-            <InputLabel>Contraseña de 8 o mas caracteres</InputLabel>
-            <InputField>
-                <input
-                type={showPassword ? "text" : "password"}
-                onChange={(e) => setPassword(e.target.value)}
-                ></input>
-                <button onClick={changeShowPassword}>
-                <span>{showPassword ? "Ocultar" : "Mostrar"}</span>
-                </button>
-            </InputField>
-            </InputWrapper>
-            <InputWrapper>
-            <InputLabel>Nombre de la empresa</InputLabel>
-            <InputField>
-                <input onChange={(e) => setCompanyName(e.target.value)}></input>
-            </InputField>
-            </InputWrapper>
-            <InputWrapper>
-            <InputLabel>Domicilio</InputLabel>
-            <InputField>
-                <input onChange={(e) => setAdress(e.target.value)}></input>
-            </InputField>
-            </InputWrapper>
-            <InputWrapper>
-            <InputLabel>Telefono de contacto</InputLabel>
-            <InputField>
-                <input onChange={(e) => setPhoneNumber(e.target.value)}></input>
-            </InputField>
-            </InputWrapper>
-            <Accept>
-            <button onClick={handleClick}>Aceptar y unirse</button>
-            </Accept>
-        </Form>
-        </Container>
-  
-    );
+  const changeShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const handleClick = async (e) => {
+    e.preventDefault();
+    try {
+      props.signUp({
+        //me quedo duda con el nombre ya que en el signup de estudiante aqui lo tienes escrito de esta manera, no se si haya problemas
+        email,
+        password,
+        companyName,
+        address,
+        phoneNumber,
+      });
+      navigate("/company/login");
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  return (
+    <Container>
+      <img src="/images/sign-up-logo.svg" />
+      <h1>Estás a unos pasos de cambiar el futuro de miles de estudiantes</h1>
+      <Form>
+        <InputWrapper>
+          <InputLabel>Email</InputLabel>
+          <InputField>
+            <input onChange={(e) => setEmail(e.target.value)}></input>
+          </InputField>
+        </InputWrapper>
+        <InputWrapper>
+          <InputLabel>Contraseña</InputLabel>
+          <InputField>
+            <input
+              type={showPassword ? "text" : "password"}
+              onChange={(e) => setPassword(e.target.value)}
+            ></input>
+            <button onClick={changeShowPassword}>
+              <span>{showPassword ? "Ocultar" : "Mostrar"}</span>
+            </button>
+          </InputField>
+        </InputWrapper>
+        <InputWrapper>
+          <InputLabel>Nombre de la empresa</InputLabel>
+          <InputField>
+            <input onChange={(e) => setCompanyName(e.target.value)}></input>
+          </InputField>
+        </InputWrapper>
+        <InputWrapper>
+          <InputLabel>Domicilio</InputLabel>
+          <InputField>
+            <input onChange={(e) => setAdress(e.target.value)}></input>
+          </InputField>
+        </InputWrapper>
+        <InputWrapper>
+          <InputLabel>Telefono de contacto</InputLabel>
+          <InputField>
+            <input
+              onChange={(e) => setPhoneNumber(e.target.value)}
+              type="tel"
+            ></input>
+          </InputField>
+        </InputWrapper>
+        <Accept>
+          <button onClick={handleClick}>Aceptar y unirse</button>
+        </Accept>
+      </Form>
+    </Container>
+  );
 };
 
 const Container = styled.div`
@@ -203,4 +206,14 @@ const Accept = styled.div`
   }
 `;
 
-export default SignUp;
+const mapStateToProps = (state) => {
+  return {
+    user: state.user,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  signUp: (data) => dispatch(companySignUpAPI(data)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignUp);

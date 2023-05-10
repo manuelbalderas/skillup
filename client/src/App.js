@@ -7,6 +7,7 @@ import Feed from "./components/student/Feed";
 import StudentSignUp from "./components/student/SignUp";
 import CreatePublication from "./components/company/CreatePublication";
 import CompanySignUp from "./components/company/SignUp";
+import CompanyLogin from "./components/company/Login";
 import { getUserAuth } from "./actions";
 import { connect } from "react-redux";
 
@@ -41,7 +42,8 @@ function App(props) {
             ]}
           ></Route>
           <Route path="/student/sign-up" element={<StudentSignUp />}></Route>
-          <Route path="/company/sign-up" element={<CompanySignUp/>}></Route>
+          <Route path="/company/sign-up" element={<CompanySignUp />}></Route>
+          <Route path="/company/login" element={<CompanyLogin />}></Route>
           <Route
             path="/create"
             element={[

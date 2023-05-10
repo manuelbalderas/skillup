@@ -29,6 +29,25 @@ export const studentLogInAPI = (data) => {
   };
 };
 
+export const companyLogInAPI = (data) => {
+  return async (dispatch) => {
+    const response = await fetch(`http://localhost:8000/company/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+
+    const payload = await response.json();
+
+    if (!payload.detail) {
+      localStorage.setItem("user", JSON.stringify(payload.user));
+      dispatch(setUser(payload.user));
+    } else {
+      // handle error
+    }
+  };
+};
+
 export const studentSignUpAPI = (data) => {
   return async (dispatch) => {
     const response = await fetch(`http://localhost:8000/student/signup`, {
@@ -41,6 +60,22 @@ export const studentSignUpAPI = (data) => {
 
     if (payload.detail) {
       // handle error, poner un texto que diga el error
+    }
+  };
+};
+
+export const companySignUpAPI = (data) => {
+  return async (dispatch) => {
+    const response = await fetch(`http://localhost:8000/company/signup`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+
+    const payload = await response.json();
+
+    if (payload.detail) {
+      // handle error
     }
   };
 };

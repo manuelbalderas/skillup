@@ -20,7 +20,7 @@ const Landing = (props) => {
   const handleSignUp = (e) => {
     e.preventDefault();
     navigate("/student/sign-up");
-  };  
+  };
 
   const changeShowPassword = () => {
     setShowPassword(!showPassword);
@@ -55,8 +55,7 @@ const Landing = (props) => {
             </a>
           </div>
         </div> */}
-        {/* <LogIn href="/">Ingresar</LogIn>
-         */}
+        <Company href="/company/login">Soy empresa</Company>
       </Nav>
       <Section>
         <Hero>
@@ -188,23 +187,24 @@ const Nav = styled.div`
   }
 `;
 
-// const LogIn = styled.a`
-//   color: #114c5f;
-//   border-radius: 60px;
-//   transition-duration: 167ms;
-//   font-size: 24px;
-//   font-weight: 600;
-//   line-height: 40px;
-//   padding: 20px 42px;
-//   text-align: center;
-//   background-color: #f2e6cf;
-//   text-decoration: none;
-//   &:hover {
-//     background-color: rgba(112, 181, 249, 0.15);
-//     color: #0a66c2;
-//     text-decoration: none;
-//   }
-// `;
+const Company = styled.a`
+  color: #114c5f;
+  border-radius: 60px;
+  transition-duration: 167ms;
+  font-size: 24px;
+  font-weight: 600;
+  /* line-height: 40px; */
+  padding: 10px 20px;
+  /* padding: 20px 42px; */
+  text-align: center;
+  background-color: #f2e6cf;
+  text-decoration: none;
+  &:hover {
+    background-color: rgba(112, 181, 249, 0.15);
+    color: #0a66c2;
+    text-decoration: none;
+  }
+`;
 
 const Section = styled.section`
   display: flex;
@@ -331,6 +331,7 @@ const LogInHero = styled.button`
   border: none;
   font-size: 16px;
 `;
+
 const SignUp = styled(LogInHero)`
   background: transparent;
   border: 1px solid #000;
