@@ -111,6 +111,29 @@ export const getPublicationsAPI = () => {
   };
 };
 
+export const getMyPublicationsAPI = (author) => {
+  return async (dispatch) => {
+    const response = await fetch(`http://localhost:8000/my-publications`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+      body: { author },
+    });
+    let payload;
+    const q = await response.json;
+    if (Array.isArray(q)) {
+      payload = q;
+    } else if (typeof q === "object" && q !== null) {
+      payload = [q];
+    }
+
+    if (q.lenght === 0) {
+      // handle error
+    } else {
+      dispatch(getPublications(payload));
+    }
+  };
+};
+
 export const getUserAuth = () => {
   return (dispatch) => {
     const user = JSON.parse(localStorage.getItem("user"));

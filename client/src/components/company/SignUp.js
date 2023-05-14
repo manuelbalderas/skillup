@@ -27,14 +27,13 @@ const SignUp = (props) => {
     e.preventDefault();
     try {
       props.signUp({
-        //me quedo duda con el nombre ya que en el signup de estudiante aqui lo tienes escrito de esta manera, no se si haya problemas
         email,
         password,
         companyName,
         address,
         phoneNumber,
       });
-      navigate("/company/login");
+      navigate("/company/sign-up/verification");
     } catch (err) {
       console.error(err);
     }

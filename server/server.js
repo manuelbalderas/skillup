@@ -18,13 +18,29 @@ app.use(express.json());
 
 app.get("/publications", async (req, res) => {
   try {
-    const vacants =
+    const publications =
       await pool.query(`SELECT P.id, C.company_name, C.profile_pic, P.title, P.remote, P.location, P.type
 FROM publications P
 INNER JOIN companies C
 ON P.author = C.email;`);
 
-    res.json(vacants.rows);
+    res.json(publications.rows);
+  } catch (err) {
+    console.error(err);
+  }
+});
+
+app.get("/my-publications", async (req, res) => {
+  const { author } = req.body;
+  try {
+    const publications = await pool.query(
+      `SELECT P.id, C.company_name, C.profile_pic, P.title, P.remote, P.location, P.type
+FROM publications P
+INNER JOIN companies C
+ON P.author = C.email
+WHERE author=$1;`,
+      [author]
+    );
   } catch (err) {
     console.error(err);
   }

@@ -200,7 +200,7 @@ const Company = styled.a`
   background-color: #f2e6cf;
   text-decoration: none;
   &:hover {
-    background-color: rgba(112, 181, 249, 0.15);
+    /* background-color: rgba(112, 181, 249, 0.15); */
     color: #0a66c2;
     text-decoration: none;
   }

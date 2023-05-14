@@ -13,14 +13,14 @@ const Header = (props) => {
             <img src="/images/header-logo.svg" alt="" />
           </a>
         </Logo>
-        <Search>
+        {/* <Search>
           <div>
             <input type="text" />
           </div>
           <SearchIcon>
             <img src="/images/search-icon.svg" alt="" />
           </SearchIcon>
-        </Search>
+        </Search> */}
         <Nav>
           <NavListWrap>
             <NavList className={props.tab === "Trainings" ? "active" : null}>

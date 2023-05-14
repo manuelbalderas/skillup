@@ -1,14 +1,16 @@
 import { useEffect } from "react";
 import styled from "styled-components";
-import { getPublicationsAPI } from "../../actions";
+import { getPublicationsAPI, getMyPublicationsAPI } from "../actions";
 import { connect } from "react-redux";
 
-const Trainings = (props) => {
+const Main = (props) => {
   useEffect(() => {
-    props.getPublications();
+    if (props.user && props.user.verified) {
+      props.getMyPublicationsAPI(props.user.email);
+    } else {
+      props.getPublications();
+    }
   }, []);
-
-  console.log(props.publications);
 
   return (
     <>
@@ -17,17 +19,24 @@ const Trainings = (props) => {
       ) : (
         <Container>
           <Publications>
-            <Title href="">Capacitaciones</Title>
+            <Title href="">
+              {props.tab == "Home"
+                ? "Publicaciones"
+                : props.tab == "Trainings"
+                ? "Capacitaciones"
+                : "Empleos"}
+            </Title>
             {props.publications.length > 0 &&
               props.publications.map((publication, key) => (
                 <Publication key={key}>
-                  {console.log(publication)}
+                  {/* {console.log(publication)} */}
                   <Photo
                     src={
                       publication.profile_pic
                         ? publication.profile_pic
                         : "/images/spotify.png"
                     }
+                    draggable="false"
                   />
                   <div>
                     <PublicationTitle>{publication.title}</PublicationTitle>
@@ -39,9 +48,9 @@ const Trainings = (props) => {
                     </Place>
                     <Type>{publication.type}</Type>
                   </div>
-                  <button>
-                    <img src="/images/save-icon.svg" alt="" />
-                  </button>
+                  {/* <button>
+                    <img src="/images/save-icon.svg" alt="" draggable="false" />
+                  </button> */}
                 </Publication>
               ))}
           </Publications>
@@ -53,7 +62,7 @@ const Trainings = (props) => {
 
 const Container = styled.div`
   grid-area: main;
-  /* width: 1010px; */
+  width: 1010px;
   /* height: 1150px; */
 `;
 
@@ -76,23 +85,29 @@ const Title = styled.a`
 `;
 
 const Publication = styled.div`
-  height: 300px;
+  height: 275px;
   display: flex;
-  align-items: center;
+
   border-bottom: 1px solid rgba(0, 0, 0, 0.15);
   &:last-child {
     border-bottom: none;
   }
+  img {
+    margin-top: 2.5em;
+    align-items: top;
+  }
   div {
+    margin-top: 2em;
     display: flex;
     flex-direction: column;
   }
   button {
-    width: 47px;
     display: flex;
-    align-items: start;
     background: transparent;
     border: none;
+
+    margin-bottom: auto;
+    margin-left: auto;
     &:hover {
       background: black;
     }
@@ -137,6 +152,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
   getPublications: () => dispatch(getPublicationsAPI()),
+  getMyPublicationsAPI: (author) => dispatch(getMyPublicationsAPI(author)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Trainings);
+export default connect(mapStateToProps, mapDispatchToProps)(Main);

@@ -1,28 +1,22 @@
 import styled from "styled-components";
 import Leftside from "./Leftside";
-import Trainings from "./Trainings";
-import Jobs from "./Jobs";
 import Main from "./Main";
 import { useNavigate, Navigate } from "react-router-dom";
 import { connect } from "react-redux";
 
 const Feed = (props) => {
+  // Feed for companies
+  // if (props.user && props.user.verified) {
   return (
     <Container>
-      {/* {!props.user && <Navigate to="/" />} */}
       <Section></Section>
       <Layout>
-        <Leftside />
-        {props.tab === "Trainings" ? (
-          <Trainings />
-        ) : props.tab === "Jobs" ? (
-          <Jobs />
-        ) : (
-          <Main />
-        )}
+        <Leftside tab={props.tab} />
+        <Main tab={props.tab} />
       </Layout>
     </Container>
   );
+  // }
 };
 
 const Container = styled.div`

@@ -16,23 +16,27 @@ const Leftside = (props) => {
               )}
             </Photo>
             <Link>
-              {props.user
+              {props.user && props.user.student_name
                 ? props.user.student_name + " " + props.user.student_last_name
+                : props.user && props.user.company_name
+                ? props.user.company_name
                 : "Usuario"}
             </Link>
           </a>
           <AddPhotoText>
-            {props.user
+            {props.user && props.user.university
               ? "Estudiante en " + props.user.university
-              : "Estudiante"}
+              : props.user && props.user.company_description != "null"
+              ? props.user.company_description
+              : "Descripcion"}
           </AddPhotoText>
         </UserInfo>
-        <Item>
+        {/* <Item>
           <span>
             <img src="/images/saved-icon.svg" alt="" />
             Empleos guardados
           </span>
-        </Item>
+        </Item> */}
       </ArtCard>
     </Container>
   );
@@ -55,7 +59,7 @@ const ArtCard = styled.div`
 `;
 
 const UserInfo = styled.div`
-  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+  /* border-bottom: 1px solid rgba(0, 0, 0, 0.15); */
   padding: 12px 12px 16px;
   word-wrap: break-word;
   word-break: break-word;

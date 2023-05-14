@@ -3,10 +3,11 @@ import "./App.css";
 import { useEffect } from "react";
 import Landing from "./components/Landing";
 import Header from "./components/Header";
-import Feed from "./components/student/Feed";
+import Feed from "./components/Feed";
 import StudentSignUp from "./components/student/SignUp";
 import CreatePublication from "./components/company/CreatePublication";
 import CompanySignUp from "./components/company/SignUp";
+import Verification from "./components/company/Verification";
 import CompanyLogin from "./components/company/Login";
 import { getUserAuth } from "./actions";
 import { connect } from "react-redux";
@@ -24,7 +25,7 @@ function App(props) {
             path="/home"
             element={[
               <Header key="home-header" tab="Home" />,
-              <Feed key="home-feed" />,
+              <Feed key="home-feed" tab="Home" />,
             ]}
           ></Route>
           <Route
@@ -37,12 +38,16 @@ function App(props) {
           <Route
             path="/jobs"
             element={[
-              <Header key="interships-header" tab="Jobs" />,
-              <Feed key="interships-header" tab="Jobs" />,
+              <Header key="jobs-header" tab="Jobs" />,
+              <Feed key="jobs-feed" tab="Jobs" />,
             ]}
           ></Route>
           <Route path="/student/sign-up" element={<StudentSignUp />}></Route>
           <Route path="/company/sign-up" element={<CompanySignUp />}></Route>
+          <Route
+            path="/company/sign-up/verification"
+            element={<Verification />}
+          ></Route>
           <Route path="/company/login" element={<CompanyLogin />}></Route>
           <Route
             path="/create"

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import styled from "styled-components";
 import { companyLogInAPI } from "../../actions";
 import { connect } from "react-redux";
@@ -14,7 +14,6 @@ const Login = (props) => {
   const handleLogin = (e) => {
     e.preventDefault();
     props.logIn({ email, password });
-    console.log(props.user);
   };
 
   const handleSignUp = (e) => {
@@ -28,6 +27,7 @@ const Login = (props) => {
 
   return (
     <Container>
+      {props.user && <Navigate to="/home" />}
       <img src="/images/sign-up-logo.svg" />
       <h1>Ingresa como empresa</h1>
       <Form>
