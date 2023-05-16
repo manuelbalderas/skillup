@@ -5,7 +5,6 @@ const cors = require("cors");
 const app = express();
 const pool = require("./db");
 const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
 
 app.use(cors());
 app.use(express.json());
@@ -18,11 +17,12 @@ app.use(express.json());
 
 app.get("/publications", async (req, res) => {
   try {
-    const publications =
-      await pool.query(`SELECT P.id, C.company_name, C.profile_pic, P.title, P.remote, P.location, P.type
-FROM publications P
-INNER JOIN companies C
-ON P.author = C.email;`);
+    const publications = await pool.query(
+      `SELECT P.id, C.company_name, C.profile_pic, P.title, P.remote, P.location, P.type
+         FROM publications P
+         INNER JOIN companies C
+         ON P.author = C.email;`
+    );
 
     res.json(publications.rows);
   } catch (err) {
@@ -30,17 +30,17 @@ ON P.author = C.email;`);
   }
 });
 
-app.get("/my-publications", async (req, res) => {
-  const { author } = req.body;
+app.get("/publications/:author", async (req, res) => {
+  const { author } = req.params;
   try {
     const publications = await pool.query(
       `SELECT P.id, C.company_name, C.profile_pic, P.title, P.remote, P.location, P.type
-FROM publications P
-INNER JOIN companies C
-ON P.author = C.email
-WHERE author=$1;`,
+       FROM publications P
+       INNER JOIN companies C ON P.author = C.email
+       WHERE P.author = $1`,
       [author]
     );
+    res.json(publications.rows);
   } catch (err) {
     console.error(err);
   }
@@ -126,6 +126,22 @@ app.post("/company/login", async (req, res) => {
     }
   } catch (err) {
     console.error(err);
+  }
+});
+
+app.post("/create", async (req, res) => {
+  const { email, title, isRemote, location, type, description } = req.body;
+
+  try {
+    const query = await pool.query(
+      `INSERT INTO publications(author, title, remote, location, type, publication_description) VALUES($1, $2, $3, $4, $5, $6)`,
+      [email, title, isRemote, location, type, description]
+    );
+  } catch (err) {
+    console.error(err);
+    if (err) {
+      res.json({ detail: err.detail });
+    }
   }
 });
 

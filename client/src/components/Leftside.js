@@ -31,13 +31,15 @@ const Leftside = (props) => {
               : "Descripcion"}
           </AddPhotoText>
         </UserInfo>
-        {/* <Item>
-          <span>
-            <img src="/images/saved-icon.svg" alt="" />
-            Empleos guardados
-          </span>
-        </Item> */}
       </ArtCard>
+      {props.user && props.user.verified ? (
+        <Item href="/create">
+          <span>
+            Crear publicación
+            <img src="/images/create-publication.svg" alt="" />
+          </span>
+        </Item>
+      ) : null}
     </Container>
   );
 };
@@ -51,7 +53,7 @@ const ArtCard = styled.div`
   overflow: hidden;
   margin-bottom: 8px;
   background-color: rgba(242, 230, 207, 0.2);
-  border-radius: 5px;
+  border-radius: 10px;
   transition: box-shadow 83ms;
   position: relative;
   border: none;
@@ -112,22 +114,26 @@ const AddPhotoText = styled.div`
 
 const Item = styled.a`
   border-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(242, 230, 207, 0.2);
   text-align: left;
   padding: 12px;
-  font-size: 24px;
+  font-size: 16px;
   font-weight: 600;
   display: block;
+  margin-top: 20px;
+  border-radius: 10px;
+  text-decoration: none;
   span {
     display: flex;
     font-size: 24;
     align-items: center;
-    color: rgba(0, 0, 0, 1);
+    color: #114c5f;
     svg {
       color: rgba(0, 0, 0, 0.6);
     }
   }
   &:hover {
-    background-color: rgba(0, 0, 0, 0.08);
+    background-color: #e9e6e1;
   }
 `;
 

@@ -1,16 +1,19 @@
 import { useEffect } from "react";
 import styled from "styled-components";
-import { getPublicationsAPI, getMyPublicationsAPI } from "../actions";
+import { getPublicationsAPI, getAuthorPublicationsAPI } from "../actions";
 import { connect } from "react-redux";
 
 const Main = (props) => {
   useEffect(() => {
-    if (props.user && props.user.verified) {
-      props.getMyPublicationsAPI(props.user.email);
-    } else {
-      props.getPublications();
+    if (props.user && props.user.email) {
+      const email = props.user.email;
+      if (props.user.verified === undefined) {
+        props.getPublications();
+      } else {
+        props.getAuthorPublications(email);
+      }
     }
-  }, []);
+  }, [props.user]);
 
   return (
     <>
@@ -29,12 +32,11 @@ const Main = (props) => {
             {props.publications.length > 0 &&
               props.publications.map((publication, key) => (
                 <Publication key={key}>
-                  {/* {console.log(publication)} */}
                   <Photo
                     src={
                       publication.profile_pic
                         ? publication.profile_pic
-                        : "/images/spotify.png"
+                        : "/images/user.svg"
                     }
                     draggable="false"
                   />
@@ -46,7 +48,11 @@ const Main = (props) => {
                       {publication.remote == "yes" ? "En remoto" : "Presencial"}
                       )
                     </Place>
-                    <Type>{publication.type}</Type>
+                    <Type>
+                      {publication.type && publication.type == "job"
+                        ? "Vacante de empleo"
+                        : "Curso"}
+                    </Type>
                   </div>
                   {/* <button>
                     <img src="/images/save-icon.svg" alt="" draggable="false" />
@@ -76,7 +82,7 @@ const Publications = styled.div`
 const Title = styled.a`
   display: flex;
   padding-left: 30px;
-  padding-top: 50px;
+  padding-top: 30px;
   /* padding: 50px 30px; */
   font-size: 35px;
   color: #114c5f;
@@ -152,7 +158,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
   getPublications: () => dispatch(getPublicationsAPI()),
-  getMyPublicationsAPI: (author) => dispatch(getMyPublicationsAPI(author)),
+  getAuthorPublications: (author) => dispatch(getAuthorPublicationsAPI(author)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Main);

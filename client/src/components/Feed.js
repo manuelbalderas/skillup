@@ -5,8 +5,6 @@ import { useNavigate, Navigate } from "react-router-dom";
 import { connect } from "react-redux";
 
 const Feed = (props) => {
-  // Feed for companies
-  // if (props.user && props.user.verified) {
   return (
     <Container>
       <Section></Section>

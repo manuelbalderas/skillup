@@ -232,6 +232,7 @@ const User = styled(NavList)`
   a > svg,
   img {
     width: 37px;
+    height: 37px;
     border-radius: 50%;
   }
   span {

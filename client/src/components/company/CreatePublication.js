@@ -1,58 +1,196 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { connect } from "react-redux";
+import Dropdown from "./Dropdown";
+import { postPublicationAPI } from "../../actions";
 
 const CreatePublication = (props) => {
+  const [email, setEmail] = useState("");
   const [title, setTitle] = useState("");
-  const [isRemote, setIsRemote] = useState(false);
+  const [isRemote, setIsRemote] = useState("");
   const [location, setLocation] = useState("");
   const [type, setType] = useState("");
-
+  const [description, setDescription] = useState("");
+  const [showNext, setShowNext] = useState(false);
   const navigate = useNavigate();
 
+  console.log(email);
+
   useEffect(() => {
-    if (!props.user) {
-      // navigate("/");
+    if (props.user) {
+      setEmail(props.user.email);
     }
-  });
+  }, [props.user]);
+
+  const handleChangeWindow = (e) => {
+    e.preventDefault();
+    setShowNext(!showNext);
+  };
+
+  const handlePublish = (e) => {
+    e.preventDefault();
+    try {
+      props.postPublication({
+        email,
+        title,
+        isRemote,
+        location,
+        type,
+        description,
+      });
+      navigate("/");
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const remoteOptions = [
+    { value: "yes", label: "Sí" },
+    { value: "no", label: "No" },
+  ];
+
+  const typeOptions = [
+    { value: "job", label: "Vacante de empleo" },
+    { value: "course", label: "Curso" },
+  ];
 
   return (
-    <Container>
-      <Section></Section>
-      <h1>Recluta y capacita al mejor talento</h1>
-      <Form>
-        <h2>Da con una gran cantidad de profesionales emergentes</h2>
-        <InputWrapper>
-          <InputLabel>¿Qué estás publicando?</InputLabel>
-          <InputField type="email"></InputField>
-        </InputWrapper>
-        <InputWrapper>
-          <InputLabel>¿Es remoto?</InputLabel>
-          <InputField></InputField>
-        </InputWrapper>
-        <InputWrapper>
-          <InputLabel>Ubicación</InputLabel>
-          <InputField></InputField>
-        </InputWrapper>
-        <InputWrapper>
-          <InputLabel>Tipo</InputLabel>
-          <InputField></InputField>
-        </InputWrapper>
-        <button>Realizar publicación</button>
-      </Form>
-    </Container>
+    <>
+      {props.user && props.user.verified ? (
+        <>
+          {!showNext ? (
+            <Container>
+              <Principal>
+                <Section></Section>
+                <h1>Recluta y capacita al mejor talento</h1>
+                <Form>
+                  <h2>Da con una gran cantidad de profesionales emergentes</h2>
+                  <InputWrapper>
+                    <InputLabel>¿Qué estás publicando?</InputLabel>
+                    <InputField>
+                      <input
+                        onChange={(e) => setTitle(e.target.value)}
+                        value={title}
+                      ></input>
+                    </InputField>
+                  </InputWrapper>
+                  <InputWrapper>
+                    <InputLabel>¿Es remoto?</InputLabel>
+                    <Dropdown
+                      placeholder="Selecciona..."
+                      options={remoteOptions}
+                      onChange={(value) => setIsRemote(value.value)}
+                    ></Dropdown>
+                  </InputWrapper>
+                  <InputWrapper>
+                    <InputLabel>Ubicación</InputLabel>
+                    <InputField>
+                      <input
+                        onChange={(e) => setLocation(e.target.value)}
+                        value={location}
+                      ></input>
+                    </InputField>
+                  </InputWrapper>
+                  <InputWrapper>
+                    <InputLabel>Tipo</InputLabel>
+                    <Dropdown
+                      placeholder="Selecciona..."
+                      options={typeOptions}
+                      onChange={(value) => setType(value.value)}
+                    ></Dropdown>
+                  </InputWrapper>
+                  <button onClick={handleChangeWindow}>Siguiente</button>
+                </Form>
+              </Principal>
+            </Container>
+          ) : (
+            <Container>
+              <Section></Section>
+              <Layout>
+                <ContainerRight>
+                  <ArtCard>
+                    <Photo>
+                      {props.user && props.user.profile_pic ? (
+                        <img src={props.user.profile_pic} alt="" />
+                      ) : (
+                        <img src="/images/user.svg" alt="" />
+                      )}
+                    </Photo>
+                    <PostInfo>
+                      <TitleRight>{title}</TitleRight>
+                      <CompanyName>
+                        {props.user && props.user.company_name
+                          ? props.user.company_name
+                          : "Companía"}
+                      </CompanyName>
+                      <Place>{location}</Place>
+                      <Remote>
+                        {isRemote
+                          ? isRemote == "yes"
+                            ? "(En remoto)"
+                            : "(Presencial)"
+                          : "No contamos con dicha información"}
+                      </Remote>
+                      <Type>
+                        {type
+                          ? type == "job"
+                            ? "Vacante de empleo"
+                            : "Curso"
+                          : "No contamos con dicha información"}
+                      </Type>
+                    </PostInfo>
+                  </ArtCard>
+                </ContainerRight>
+                <ContainerMain>
+                  <Content>
+                    <TitleMain>
+                      Háblanos del{" "}
+                      {type ? (type == "job" ? "puesto" : "curso") : null}
+                    </TitleMain>
+                    <Description>
+                      Descripción
+                      <textarea
+                        onChange={(e) => setDescription(e.target.value)}
+                        value={description}
+                      ></textarea>
+                    </Description>
+                    <Buttons>
+                      <Back onClick={handleChangeWindow}>Volver</Back>
+                      <Publish onClick={handlePublish}>
+                        Publicar{" "}
+                        {type ? (type == "job" ? "puesto" : "curso") : null}
+                      </Publish>
+                    </Buttons>
+                  </Content>
+                </ContainerMain>
+              </Layout>
+              <Section></Section>
+            </Container>
+          )}
+        </>
+      ) : (
+        navigate("/")
+      )}
+    </>
   );
 };
 
 const Container = styled.div`
+  padding: 0 10%;
+  max-width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.05);
+`;
+
+const Principal = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   max-width: 100%;
-  height: 100vh;
+  /* height: 100vh; */
   margin: 0;
-  background-color: rgba(0, 0, 0, 0.05);
   text-align: center;
   h1 {
     color: #114c5f;
@@ -111,9 +249,9 @@ const Form = styled.div`
     margin: 30px auto;
     color: white;
     background: #0799b6;
-    border-radius: 24px;
-    padding: 14px 118px;
-    font-size: 16px;
+    border-radius: 30px;
+    padding: 14px 30%;
+    font-size: 26px;
     border: none;
   }
   span {
@@ -127,29 +265,176 @@ const InputWrapper = styled.div`
   text-align: start;
   margin-left: 40px;
   margin-top: 15px;
-  &:first-child {
-    margin-top: 30px;
-  }
   @media (max-width: 768px) {
     width: 100%;
   }
 `;
 
 const InputLabel = styled.span`
-  font-size: 14px;
-  margin-bottom: -5px;
+  font-size: 18px;
+  /* margin-bottom: -5px; */
   font-weight: 400;
   color: #114c5f;
 `;
 
-const InputField = styled.input`
+const InputField = styled.div`
+  padding: 2px;
+  border: 1px solid rgba(0, 0, 0, 0.75);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  background-color: white;
   width: 410px;
   height: 32px;
-  border-radius: 4px;
-  border: 1px solid rgba(0, 0, 0, 0.75);
   margin-top: 10px;
-  padding-left: 10px;
-  outline: none;
+  input {
+    font-weight: 400;
+    font-size: 18px;
+    border: none;
+    outline: none;
+    height: 80%;
+    width: 100%;
+  }
 `;
 
-export default CreatePublication;
+const Layout = styled.div`
+  display: grid;
+  grid-template-areas: "main rightside";
+  grid-template-columns: minmax(0, 12fr) minmax(0, 4fr);
+  column-gap: 25px;
+  row-gap: 25px;
+  grid-template-rows: auto;
+  margin: 25px 0;
+  @media (max-width: 768px) {
+    display: flex;
+    flex-direction: column;
+    padding: 0 5px;
+  }
+`;
+
+const ContainerRight = styled.div`
+  grid-area: rightside;
+`;
+
+const ArtCard = styled.div`
+  max-width: 80%;
+  display: flex;
+  text-align: center;
+  overflow: hidden;
+  margin-bottom: 8px;
+  background-color: white;
+  border-radius: 10px;
+  transition: box-shadow 83ms;
+  position: relative;
+  border: none;
+  box-shadow: 0px 0px 0px 1.33333px rgba(0, 0, 0, 0.08);
+  padding: 20px 20px 16px;
+`;
+
+const PostInfo = styled.div`
+  word-wrap: break-word;
+  word-break: break-word;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+`;
+
+const Photo = styled.div`
+  img {
+    width: 48px;
+    height: 48px;
+    padding-right: 20px;
+  }
+`;
+
+const TitleRight = styled.div`
+  font-size: 16px;
+  font-weight: 600;
+`;
+
+const CompanyName = styled.div`
+  font-size: 14px;
+  font-weight: 400;
+`;
+
+const Place = styled(CompanyName)`
+  color: rgba(0, 0, 0, 0.6);
+`;
+
+const Remote = styled(Place)``;
+
+const Type = styled(CompanyName)`
+  color: #114c5f;
+  font-weight: 600;
+`;
+
+const ContainerMain = styled.div`
+  grid-area: main;
+`;
+
+const Content = styled.div`
+  width: 100%;
+  background-color: white;
+  border-radius: 10px;
+  /* box-shadow: 0px 0px 0px 1.33333px rgba(0, 0, 0, 0.08); */
+`;
+
+const TitleMain = styled.div`
+  padding: 30px;
+  font-size: 20px;
+  font-weight: 600;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+`;
+
+const Description = styled(TitleMain)`
+  display: flex;
+  flex-direction: column;
+  textarea {
+    min-height: 45vh;
+    padding: 10px;
+    margin-top: 10px;
+    border: 2px solid rgba(17, 76, 95, 0.6);
+    border-radius: 4px;
+    resize: none;
+    outline: none;
+    font-size: 14px;
+  }
+`;
+
+const Buttons = styled.div`
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: right;
+  align-items: center;
+  padding: 10px 10px 30px;
+`;
+
+const Publish = styled.button`
+  background-color: #114c5f;
+  padding: 10px;
+  border-radius: 30px;
+  /* width: 100%; */
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  font-size: 16px;
+  margin: 5px;
+`;
+
+const Back = styled(Publish)`
+  background: transparent;
+  color: rgba(0, 0, 0, 0.6);
+  border: 2px solid rgba(0, 0, 0, 0.6);
+`;
+
+const mapStateToProps = (state) => {
+  return {
+    user: state.userState.user,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  postPublication: (data) => dispatch(postPublicationAPI(data)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(CreatePublication);

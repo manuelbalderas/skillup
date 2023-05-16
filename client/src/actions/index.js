@@ -93,43 +93,37 @@ export const getPublicationsAPI = () => {
       method: "GET",
       headers: { "Content-Type": "application/json" },
     });
-    let payload;
-
-    const q = await response.json();
-
-    if (Array.isArray(q)) {
-      payload = q;
-    } else if (typeof q === "object" && q !== null) {
-      payload = [q];
-    }
-
-    if (q.lenght === 0) {
-      // handle error
-    } else {
-      dispatch(getPublications(payload));
-    }
+    const publications = await response.json();
+    dispatch(getPublications(publications));
   };
 };
 
-export const getMyPublicationsAPI = (author) => {
+export const getAuthorPublicationsAPI = (author) => {
   return async (dispatch) => {
-    const response = await fetch(`http://localhost:8000/my-publications`, {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-      body: { author },
-    });
-    let payload;
-    const q = await response.json;
-    if (Array.isArray(q)) {
-      payload = q;
-    } else if (typeof q === "object" && q !== null) {
-      payload = [q];
-    }
+    const response = await fetch(
+      `http://localhost:8000/publications/${author}`,
+      {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+    const publications = await response.json();
+    dispatch(getPublications(publications));
+  };
+};
 
-    if (q.lenght === 0) {
+export const postPublicationAPI = (data) => {
+  return async (dispatch) => {
+    const response = await fetch(`http://localhost:8000/create`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+
+    const payload = await response.json();
+
+    if (payload.detail) {
       // handle error
-    } else {
-      dispatch(getPublications(payload));
     }
   };
 };
