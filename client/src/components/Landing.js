@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { useState } from "react";
 import { useNavigate, Navigate } from "react-router-dom";
 import { connect } from "react-redux";
@@ -63,9 +63,10 @@ const Landing = (props) => {
           <img src="/images/hero.svg" alt="" />
         </Hero>
         <Form>
+          {props.detail && <Error>{props.detail}</Error>}
           <InputWrapper>
             <InputLabel>Correo electrónico</InputLabel>
-            <InputField>
+            <InputField detail={props.detail}>
               <input
                 type="email"
                 onChange={(e) => setEmail(e.target.value)}
@@ -74,7 +75,7 @@ const Landing = (props) => {
           </InputWrapper>
           <InputWrapper>
             <InputLabel>Contraseña</InputLabel>
-            <InputField>
+            <InputField detail={props.detail}>
               <input
                 type={showPassword ? "text" : "password"}
                 onChange={(e) => setPassword(e.target.value)}
@@ -257,14 +258,17 @@ const Hero = styled.div`
 `;
 
 const Form = styled.div`
+  margin-top: 20px;
   @media (max-width: 768px) {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    align-content: center;
-    justify-content: center;
-    /* margin-left: 20px; */
+    margin: auto;
   }
+`;
+
+const Error = styled.span`
+  font-size: 16px;
+  color: #c56467;
 `;
 
 const InputWrapper = styled.div`
@@ -285,6 +289,11 @@ const InputField = styled.a`
   height: 30px;
   padding: 10px;
   border: 1px solid rgba(0, 0, 0, 0.75);
+  ${(props) =>
+    props.detail &&
+    css`
+      border: 2px solid #c56467;
+    `}
   border-radius: 4px;
   display: flex;
   align-items: center;
@@ -490,6 +499,7 @@ const JoinUs = styled.h2`
 const mapStateToProps = (state) => {
   return {
     user: state.userState.user,
+    detail: state.detailState.detail,
   };
 };
 

@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { studentSignUpAPI } from "../../actions";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 const SignUp = (props) => {
   const [email, setEmail] = useState("");
@@ -13,8 +13,6 @@ const SignUp = (props) => {
   const [city, setCity] = useState("");
   const [university, setUniversity] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     console.log(props.user);
@@ -36,7 +34,6 @@ const SignUp = (props) => {
         city,
         university,
       });
-      navigate("/");
     } catch (err) {
       console.error(err);
     }
@@ -44,12 +41,14 @@ const SignUp = (props) => {
 
   return (
     <Container>
+      {props.user && <Navigate to="/" />}
       <img src="/images/sign-up-logo.svg" />
       <h1>Estás a unos pasos de cambiar tu futuro</h1>
       <Form>
+        {props.detail && <Error>{props.detail}</Error>}
         <InputWrapper>
           <InputLabel>Correo electrónico</InputLabel>
-          <InputField>
+          <InputField detail={props.detail}>
             <input onChange={(e) => setEmail(e.target.value)}></input>
           </InputField>
         </InputWrapper>
@@ -175,6 +174,12 @@ const Company = styled(LogIn)`
   }
 `;
 
+const Error = styled.span`
+  margin-top: 10px;
+  font-size: 16px;
+  color: #c56467;
+`;
+
 const InputWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -195,6 +200,11 @@ const InputField = styled.a`
   height: 32px;
   padding: 2px;
   border: 1px solid rgba(0, 0, 0, 0.75);
+  ${(props) =>
+    props.detail &&
+    css`
+      border: 2px solid #c56467;
+    `}
   border-radius: 4px;
   display: flex;
   /* justify-content: space-between; */
@@ -233,7 +243,8 @@ const Accept = styled.div`
 
 const mapStateToProps = (state) => {
   return {
-    user: state.user,
+    user: state.userState.user,
+    detail: state.detailState.detail,
   };
 };
 

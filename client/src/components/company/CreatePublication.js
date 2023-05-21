@@ -7,9 +7,9 @@ import { postPublicationAPI } from "../../actions";
 
 const CreatePublication = (props) => {
   const [email, setEmail] = useState("");
-  const [title, setTitle] = useState("");
+  const [title, setTitle] = useState(null);
   const [isRemote, setIsRemote] = useState("");
-  const [location, setLocation] = useState("");
+  const [location, setLocation] = useState(null);
   const [type, setType] = useState("");
   const [description, setDescription] = useState("");
   const [showNext, setShowNext] = useState(false);
@@ -31,12 +31,14 @@ const CreatePublication = (props) => {
   const handlePublish = (e) => {
     e.preventDefault();
     try {
+      const isRemoteValue = isRemote.value;
+      const typeValue = type.value;
       props.postPublication({
         email,
         title,
-        isRemote,
+        isRemoteValue,
         location,
-        type,
+        typeValue,
         description,
       });
       navigate("/");
@@ -80,7 +82,8 @@ const CreatePublication = (props) => {
                     <Dropdown
                       placeholder="Selecciona..."
                       options={remoteOptions}
-                      onChange={(value) => setIsRemote(value.value)}
+                      onChange={(value) => setIsRemote(value)}
+                      value={isRemote}
                     ></Dropdown>
                   </InputWrapper>
                   <InputWrapper>
@@ -97,7 +100,8 @@ const CreatePublication = (props) => {
                     <Dropdown
                       placeholder="Selecciona..."
                       options={typeOptions}
-                      onChange={(value) => setType(value.value)}
+                      onChange={(value) => setType(value)}
+                      value={type}
                     ></Dropdown>
                   </InputWrapper>
                   <button onClick={handleChangeWindow}>Siguiente</button>

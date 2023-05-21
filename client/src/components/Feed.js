@@ -8,6 +8,11 @@ const Feed = (props) => {
   return (
     <Container>
       <Section></Section>
+      {props.detail && (
+        <p>
+          <Error>{props.detail}</Error>
+        </p>
+      )}
       <Layout>
         <Leftside tab={props.tab} />
         <Main tab={props.tab} />
@@ -20,6 +25,9 @@ const Feed = (props) => {
 const Container = styled.div`
   padding: 0 10%;
   max-width: 100%;
+  p {
+    text-align: center;
+  }
 `;
 
 const Section = styled.section`
@@ -48,6 +56,11 @@ const Section = styled.section`
   }
 `;
 
+const Error = styled.span`
+  font-size: 22px;
+  color: #c56467;
+`;
+
 const Layout = styled.div`
   display: grid;
   grid-template-areas: "leftside main";
@@ -66,6 +79,7 @@ const Layout = styled.div`
 const mapStateToProps = (state) => {
   return {
     user: state.userState.user,
+    detail: state.detailState.detail,
   };
 };
 

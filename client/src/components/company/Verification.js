@@ -30,6 +30,7 @@ const Container = styled.div`
   margin: auto;
   background-color: #f3f2f0;
   text-align: center;
+  height: 100vh;
 `;
 
 const Content = styled.div`

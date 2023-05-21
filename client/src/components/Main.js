@@ -1,24 +1,64 @@
 import { useEffect } from "react";
 import styled from "styled-components";
-import { getPublicationsAPI, getAuthorPublicationsAPI } from "../actions";
+import {
+  getPublicationsAPI,
+  getAuthorPublicationsAPI,
+  getJobsAPI,
+  getTrainingsAPI,
+  getAuthorJobsAPI,
+  getAuthorTrainingsAPI,
+  getPublicationID,
+} from "../actions";
+import { useNavigate } from "react-router-dom";
 import { connect } from "react-redux";
 
 const Main = (props) => {
+  const navigate = useNavigate();
+
   useEffect(() => {
-    if (props.user && props.user.email) {
-      const email = props.user.email;
-      if (props.user.verified === undefined) {
-        props.getPublications();
-      } else {
+    if (props.tab == "Home") {
+      if (props.user && props.user.email) {
+        if (props.user.verified === undefined) {
+          props.getPublications();
+          return;
+        }
+        const email = props.user.email;
         props.getAuthorPublications(email);
+      }
+    } else if (props.tab == "Jobs") {
+      if (props.user && props.user.email) {
+        if (props.user.verified === undefined) {
+          props.getJobs();
+          return;
+        }
+        const email = props.user.email;
+        props.getAuthorJobs(email);
+      }
+    }
+    if (props.tab === "Trainings") {
+      if (props.user && props.user.email) {
+        if (props.user.verified === undefined) {
+          props.getTrainings();
+          return;
+        }
+        const email = props.user.email;
+        props.getAuthorTrainings(email);
       }
     }
   }, [props.user]);
 
+  const handlePublicationClick = async (publication) => {
+    const id = await props.getPublication(publication.id);
+    console.log(id);
+    navigate(`/publication/${id}`);
+  };
+
   return (
     <>
       {props.publications.length === 0 ? (
-        <p>No hay publicaciones por mostrar.</p>
+        <Empty>
+          <p>No hay publicaciones por mostrar.</p>
+        </Empty>
       ) : (
         <Container>
           <Publications>
@@ -41,7 +81,11 @@ const Main = (props) => {
                     draggable="false"
                   />
                   <div>
-                    <PublicationTitle>{publication.title}</PublicationTitle>
+                    <PublicationTitle
+                      onClick={() => handlePublicationClick(publication)}
+                    >
+                      {publication.title}
+                    </PublicationTitle>
                     <ProfileName>{publication.company_name}</ProfileName>
                     <Place>
                       {publication.location} (
@@ -65,6 +109,19 @@ const Main = (props) => {
     </>
   );
 };
+
+const Empty = styled.div`
+  display: flex;
+  align-items: center;
+  width: 95vh;
+  height: 30%;
+  p {
+    margin: 0;
+    margin-left: 1em;
+    font-size: 28px;
+    color: #114c5f;
+  }
+`;
 
 const Container = styled.div`
   grid-area: main;
@@ -158,7 +215,12 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
   getPublications: () => dispatch(getPublicationsAPI()),
+  getJobs: () => dispatch(getJobsAPI()),
+  getTrainings: () => dispatch(getTrainingsAPI()),
   getAuthorPublications: (author) => dispatch(getAuthorPublicationsAPI(author)),
+  getAuthorJobs: (author) => dispatch(getAuthorJobsAPI(author)),
+  getAuthorTrainings: (author) => dispatch(getAuthorTrainingsAPI(author)),
+  getPublication: (id) => dispatch(getPublicationID(id)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Main);

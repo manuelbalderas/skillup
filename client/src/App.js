@@ -9,6 +9,8 @@ import CreatePublication from "./components/company/CreatePublication";
 import CompanySignUp from "./components/company/SignUp";
 import Verification from "./components/company/Verification";
 import CompanyLogin from "./components/company/Login";
+import Publication from "./components/Publication";
+import Apply from "./components/student/Apply";
 import { getUserAuth } from "./actions";
 import { connect } from "react-redux";
 
@@ -55,6 +57,14 @@ function App(props) {
               <Header key="create-header" />,
               <CreatePublication key="create-publication" />,
             ]}
+          ></Route>
+          <Route
+            path="/publication/:id"
+            element={[<Header />, <Publication />]}
+          ></Route>
+          <Route
+            path="/publication/apply/:id"
+            element={[<Header />, <Apply />]}
           ></Route>
         </Routes>
       </Router>

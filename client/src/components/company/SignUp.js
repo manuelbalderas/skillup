@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import { companySignUpAPI } from "../../actions";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 //no se si tenia que cambiar el nombre del email y de la contrasenia
 const SignUp = (props) => {
@@ -12,12 +12,6 @@ const SignUp = (props) => {
   const [address, setAdress] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    console.log(props.user);
-  });
 
   const changeShowPassword = () => {
     setShowPassword(!showPassword);
@@ -33,7 +27,6 @@ const SignUp = (props) => {
         address,
         phoneNumber,
       });
-      navigate("/company/sign-up/verification");
     } catch (err) {
       console.error(err);
     }
@@ -41,12 +34,14 @@ const SignUp = (props) => {
 
   return (
     <Container>
+      {props.user && <Navigate to="/" />}
       <img src="/images/sign-up-logo.svg" />
       <h1>Estás a unos pasos de cambiar el futuro de miles de estudiantes</h1>
       <Form>
+        {props.detail && <Error>{props.detail}</Error>}
         <InputWrapper>
           <InputLabel>Email</InputLabel>
-          <InputField>
+          <InputField detail={props.detail}>
             <input onChange={(e) => setEmail(e.target.value)}></input>
           </InputField>
         </InputWrapper>
@@ -99,6 +94,7 @@ const Container = styled.div`
   margin: 0;
   background-color: #f3f2f0;
   text-align: center;
+  height: 100vh;
   img {
     margin-top: 1em;
   }
@@ -149,6 +145,12 @@ const Company = styled(LogIn)`
   }
 `;
 
+const Error = styled.span`
+  margin-top: 10px;
+  font-size: 16px;
+  color: #c56467;
+`;
+
 const InputWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -169,6 +171,11 @@ const InputField = styled.a`
   height: 32px;
   padding: 2px;
   border: 1px solid rgba(0, 0, 0, 0.75);
+  ${(props) =>
+    props.detail &&
+    css`
+      border: 2px solid #c56467;
+    `}
   border-radius: 4px;
   display: flex;
   /* justify-content: space-between; */
@@ -207,7 +214,8 @@ const Accept = styled.div`
 
 const mapStateToProps = (state) => {
   return {
-    user: state.user,
+    user: state.userState.user,
+    detail: state.detailState.detail,
   };
 };
 

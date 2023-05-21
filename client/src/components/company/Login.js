@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate, Navigate } from "react-router-dom";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { companyLogInAPI } from "../../actions";
 import { connect } from "react-redux";
 
@@ -31,9 +31,10 @@ const Login = (props) => {
       <img src="/images/sign-up-logo.svg" />
       <h1>Ingresa como empresa</h1>
       <Form>
+        {props.detail && <Error>{props.detail}</Error>}
         <InputWrapper>
           <InputLabel>Correo electrónico</InputLabel>
-          <InputField>
+          <InputField detail={props.detail}>
             <input
               type="email"
               onChange={(e) => setEmail(e.target.value)}
@@ -42,7 +43,7 @@ const Login = (props) => {
         </InputWrapper>
         <InputWrapper>
           <InputLabel>Contraseña</InputLabel>
-          <InputField>
+          <InputField detail={props.detail}>
             <input
               type={showPassword ? "text" : "password"}
               onChange={(e) => setPassword(e.target.value)}
@@ -74,6 +75,7 @@ const Container = styled.div`
   justify-content: center;
   margin: 0;
   background-color: #f3f2f0;
+  height: 100vh;
   /* text-align: center; */
   img {
     margin-top: 1em;
@@ -88,6 +90,11 @@ const Container = styled.div`
       font-size: 20px;
     }
   }
+`;
+
+const Error = styled.span`
+  font-size: 16px;
+  color: #c56467;
 `;
 
 const Form = styled.div`
@@ -119,6 +126,11 @@ const InputField = styled.a`
   height: 30px;
   padding: 15px 10px;
   border: 1px solid rgba(0, 0, 0, 0.75);
+  ${(props) =>
+    props.detail &&
+    css`
+      border: 2px solid #c56467;
+    `}
   border-radius: 4px;
   display: flex;
   align-items: center;
@@ -203,6 +215,7 @@ const Divider = styled.div`
 const mapStateToProps = (state) => {
   return {
     user: state.userState.user,
+    detail: state.detailState.detail,
   };
 };
 

@@ -35,7 +35,7 @@ const Leftside = (props) => {
       {props.user && props.user.verified ? (
         <Item href="/create">
           <span>
-            Crear publicación
+            <p>Crear publicación</p>
             <img src="/images/create-publication.svg" alt="" />
           </span>
         </Item>
@@ -125,11 +125,20 @@ const Item = styled.a`
   text-decoration: none;
   span {
     display: flex;
-    font-size: 24;
     align-items: center;
-    color: #114c5f;
     svg {
       color: rgba(0, 0, 0, 0.6);
+    }
+    p {
+      margin-left: 2.2em;
+      margin-bottom: auto;
+      font-size: 22px;
+      margin-top: auto;
+      color: #114c5f;
+    }
+    img {
+      margin-left: auto;
+      margin-right: 2.2em;
     }
   }
   &:hover {

@@ -11,7 +11,8 @@ const Icon = () => {
 
 const Dropdown = ({ placeholder, options, onChange, value }) => {
   const [showMenu, setShowMenu] = useState(false);
-  const [selectedValue, setSelectedValue] = useState("");
+  console.log(value);
+  const [selectedValue, setSelectedValue] = useState(value || "");
 
   useEffect(() => {
     const handler = () => setShowMenu(false);
@@ -93,14 +94,13 @@ const Menu = styled.div`
 `;
 
 const Item = styled.div`
-  padding: 5px;
-  cursor: pointer;
   &:hover {
     background-color: #9fc3f870;
   }
 `;
 
 const SelectedValue = styled.div`
+  width: 40vh;
   font-weight: 400;
   font-size: 18px;
 `;
@@ -109,7 +109,7 @@ const Tools = styled.div``;
 
 const Tool = styled.div`
   display: flex;
-  flex-flow: row nowrap;
+  flex-flow: row wrap;
   justify-content: space-between;
   align-content: center;
 `;
