@@ -1,4 +1,10 @@
-import { SET_USER, GET_PUBLICATIONS, SET_DETAIL } from "./actionType";
+import {
+  SET_USER,
+  GET_PUBLICATIONS,
+  SET_DETAIL,
+  GET_APPLICANTS,
+  GET_COMPANIES,
+} from "./actionType";
 
 export const setUser = (payload) => ({
   type: SET_USER,
@@ -10,8 +16,18 @@ export const setDetail = (payload) => ({
   detail: payload,
 });
 
+export const getApplicants = (payload) => ({
+  type: GET_APPLICANTS,
+  payload: payload,
+});
+
 export const getPublications = (payload) => ({
   type: GET_PUBLICATIONS,
+  payload: payload,
+});
+
+export const getCompanies = (payload) => ({
+  type: GET_COMPANIES,
   payload: payload,
 });
 
@@ -42,6 +58,24 @@ export const companyLogInAPI = (data) => {
       body: JSON.stringify(data),
     });
 
+    const payload = await response.json();
+
+    if (!payload.detail) {
+      localStorage.setItem("user", JSON.stringify(payload.user));
+      dispatch(setUser(payload.user));
+    } else {
+      dispatch(setDetail(payload.detail));
+    }
+  };
+};
+
+export const adminLogInAPI = (data) => {
+  return async (dispatch) => {
+    const response = await fetch(`http://localhost:8000/admin/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
     const payload = await response.json();
 
     if (!payload.detail) {
@@ -108,6 +142,31 @@ export const getPublicationsAPI = () => {
     });
     const publications = await response.json();
     dispatch(getPublications(publications));
+  };
+};
+
+export const getCompaniesToValidateAPI = () => {
+  return async (dispatch) => {
+    const response = await fetch(`http://localhost:8000/companies/validate`, {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+    const companies = await response.json();
+    dispatch(getCompanies(companies));
+  };
+};
+
+export const getApplicantsAPI = (id) => {
+  return async (dispatch) => {
+    const response = await fetch(
+      `http://localhost:8000/publication/applicants/${id}`,
+      {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+    const applicants = await response.json();
+    dispatch(getApplicants(applicants));
   };
 };
 
@@ -189,6 +248,19 @@ export const getPublicationID = (id) => {
   };
 };
 
+export const validateCompanyAPI = (data) => {
+  return async (dispatch) => {
+    const response = await fetch(
+      `http://localhost:8000/companies/validate-company`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      }
+    );
+  };
+};
+
 export const getPublicationAPI = (id) => {
   return async (dispatch) => {
     const response = await fetch(`http://localhost:8000/publication/${id}`, {
@@ -212,6 +284,77 @@ export const postPublicationAPI = (data) => {
 
     if (payload.detail) {
       dispatch(setDetail(payload.detail));
+    }
+  };
+};
+
+export const editPublicationAPI = (data) => {
+  return async (dispatch) => {
+    const response = await fetch(`http://localhost:8000/publication/edit`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+
+    const payload = await response.json();
+
+    if (payload.detail) {
+      dispatch(setDetail(payload.detail));
+    }
+  };
+};
+
+export const deletePublicationAPI = (data) => {
+  return async (dispatch) => {
+    const response = await fetch(`http://localhost:8000/publication/delete`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+
+    const payload = await response.json();
+
+    if (payload.detail) {
+      dispatch(setDetail(payload.detail));
+    }
+  };
+};
+
+export const postInscriptionAPI = (data) => {
+  return async (dispatch) => {
+    const response = await fetch(`http://localhost:8000/publication/join`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+
+    const payload = await response.json();
+
+    if (payload.detail) {
+      dispatch(setDetail(payload.detail));
+    }
+  };
+};
+
+export const postCVAPI = (file) => {
+  return async (dispatch) => {
+    const formData = new FormData();
+    formData.append("file", file);
+    try {
+      const response = await fetch(`http://localhost:8000/upload-cv`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+        body: formData,
+      });
+      if (response.ok) {
+        console.log("File uploaded.");
+        return;
+      }
+      console.error("File upload failed");
+    } catch (err) {
+      console.error(err);
     }
   };
 };

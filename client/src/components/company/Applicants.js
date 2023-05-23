@@ -1,37 +1,63 @@
 import styled from "styled-components";
 import { useNavigate, useParams } from "react-router-dom";
-import { getPublicationAPI, deletePublicationAPI } from "../actions";
+import {
+  getPublicationAPI,
+  deletePublicationAPI,
+  getApplicantsAPI,
+} from "../../actions";
 import { connect } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+
+const UserProfilePreview = ({ applicant }) => {
+  return (
+    <PreviewContainer>
+      <PreviewPhoto>
+        {applicant.profile_pic ? (
+          <img src={applicant.profile_pic} />
+        ) : (
+          <img src="/images/user.svg" />
+        )}
+      </PreviewPhoto>
+      <PreviewInfo>
+        <PreviewTitle>
+          {applicant.student_name} {applicant.student_last_name}
+        </PreviewTitle>
+        <PreviewDescription>
+          <img src="/images/information.svg" />
+          Estudiante en {applicant.university}
+        </PreviewDescription>
+        <PreviewCountry>
+          <img src="/images/location-pin.svg" />
+          {applicant.country}
+        </PreviewCountry>
+        <PreviewEmail>
+          <img src="/images/email-2.svg" />
+          {applicant.email}
+        </PreviewEmail>
+      </PreviewInfo>
+    </PreviewContainer>
+  );
+};
 
 const Publication = (props) => {
   const { id } = useParams();
-  const navigate = useNavigate();
+
+  const [showProfileIndex, setShowProfileIndex] = useState(null);
 
   useEffect(() => {
     props.getPublication(id);
-    console.log(props.publication);
   }, [props.publication]);
 
-  const handleApply = (e) => {
-    e.preventDefault();
-    navigate(`/publication/apply/${id}`);
+  useEffect(() => {
+    props.getApplicants(id);
+  }, [props.applicants]);
+
+  const handleMouseEnter = (index) => {
+    setShowProfileIndex(index);
   };
 
-  const handleEdit = (e) => {
-    e.preventDefault();
-    navigate(`/publication/edit/${id}`);
-  };
-
-  const handleDelete = (e) => {
-    e.preventDefault();
-    navigate(-1);
-    props.deletePublication({ id });
-  };
-
-  const handleApplicants = (e) => {
-    e.preventDefault();
-    navigate(`/publication/applicants/${id}`);
+  const handleMouseLeave = () => {
+    setShowProfileIndex(null);
   };
 
   return (
@@ -72,52 +98,37 @@ const Publication = (props) => {
         </ContainerLeft>
         <ContainerMain>
           <Content>
-            <TitleMain>{props.publication.title}</TitleMain>
-            <PostInfoMain>
-              <CompanyNameMain>
-                {props.publication.company_name}
-              </CompanyNameMain>
-              <PlaceMain>{props.publication.location}</PlaceMain>
-              <RemoteMain>
-                {props.publication.remote
-                  ? props.publication.remote == "yes"
-                    ? "(En remoto)"
-                    : "(Presencial)"
-                  : "(No contamos con dicha información)"}
-              </RemoteMain>
-              <TypeMain>
-                {props.publication.type
-                  ? props.publication.type == "job"
-                    ? "Vacante de empleo"
-                    : "Curso"
-                  : "No contamos con dicha información"}
-              </TypeMain>
-            </PostInfoMain>
-            {props.user && props.user.email === props.publication.author ? (
-              <Buttons>
-                <Edit onClick={handleEdit}>
-                  Editar
-                  <img src="/images/edit.svg" alt="" />
-                </Edit>
-                <Delete onClick={handleDelete}>Eliminar</Delete>
-                <Applicants onClick={handleApplicants}>
-                  Ver la lista de interesados
-                </Applicants>
-              </Buttons>
-            ) : (
-              <Buttons>
-                <ApplyFor onClick={handleApply}>
-                  Aplicar
-                  <img src="/images/apply.svg" />
-                </ApplyFor>
-              </Buttons>
-            )}
-            <Description>
-              <h2>Acerca del empleo</h2>
-              {props.publication.publication_description !== ""
-                ? props.publication.publication_description
-                : "No se cuenta con una descripción."}
-            </Description>
+            <TitleMain>
+              {props.applicants.length != 1
+                ? props.applicants.length != 0
+                  ? props.applicants.length + " Interesados"
+                  : "No hay ningún interesado"
+                : props.applicants.length + " Interesado"}
+            </TitleMain>
+            <>
+              {props.applicants.length > 0 &&
+                props.applicants.map((applicant, key) => (
+                  <ApplicantCard>
+                    <ApplicantPhoto>
+                      <img src="/images/user.svg" />
+                    </ApplicantPhoto>
+                    <ApplicantInfo>
+                      <ApplicantName
+                        onMouseEnter={() => handleMouseEnter(key)}
+                        onMouseLeave={handleMouseLeave}
+                      >
+                        {applicant.student_name} {applicant.student_last_name}
+                      </ApplicantName>
+                      <ApplicantDescription>
+                        Estudiante en {applicant.university}
+                      </ApplicantDescription>
+                    </ApplicantInfo>
+                    {showProfileIndex === key && (
+                      <UserProfilePreview applicant={applicant} />
+                    )}
+                  </ApplicantCard>
+                ))}
+            </>
           </Content>
         </ContainerMain>
       </Layout>
@@ -125,59 +136,57 @@ const Publication = (props) => {
   );
 };
 
-const Applicants = styled.div`
-  font-weight: 600;
-  text-decoration: none;
-  color: #0799b6;
-  font-size: 22px;
-  margin-left: 20px;
-  cursor: pointer;
-`;
-
-const Description = styled.div`
-  h2 {
-    font-size: 25px;
-    font-weight: 600;
-    margin-bottom: 40px;
-    color: #114c5f;
-  }
-  margin-top: 40px;
-`;
-
-const Edit = styled.div`
-  background-color: #0799b6;
-  padding: 10px 20px;
-  border-radius: 30px;
-  color: #f2e6cf;
-  font-weight: 600;
-  border: 2px solid #0799b6;
-  /* border: none; */
+const PreviewContainer = styled.div`
+  z-index: 9999;
+  position: absolute;
   display: flex;
   align-content: center;
-  cursor: pointer;
-  img {
-    margin-left: 10px;
-    height: 20px;
-    width: 20px;
-  }
-  font-size: 16px;
+  top: -100%;
+  left: 6%;
+  background-color: #fcfaf5;
+  border-radius: 5px;
+  padding: 10px;
+  /* width: 300px; */
+  min-width: 350px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
 `;
 
-const Delete = styled(Edit)`
-  background: transparent;
-  color: #b6075b;
-  border: 2px solid #b6075b;
+const PreviewInfo = styled.div`
+  display: flex;
+  flex-direction: column;
   margin-left: 10px;
 `;
 
-const ApplyFor = styled(Edit)``;
+const PreviewPhoto = styled.div`
+  img {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+  }
+`;
 
-const Buttons = styled.div`
+const PreviewTitle = styled.div`
+  color: #114c5f;
+  font-weight: 600;
+`;
+
+const PreviewDescription = styled.div`
+  color: rgba(0, 0, 0, 0.6);
   display: flex;
-  flex-flow: row nowrap;
-  justify-content: left;
-  align-items: center;
-  margin-top: 40px;
+  align-content: center;
+  margin-top: 5px;
+  img {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+  }
+`;
+
+const PreviewCountry = styled(PreviewDescription)``;
+
+const PreviewEmail = styled(PreviewDescription)`
+  color: black;
+  font-weight: 600;
 `;
 
 const Container = styled.div`
@@ -209,11 +218,6 @@ const Section = styled.section`
     flex-direction: column;
     padding: 0 5px;
   }
-`;
-
-const Error = styled.span`
-  font-size: 22px;
-  color: #c56467;
 `;
 
 const Layout = styled.div`
@@ -272,8 +276,8 @@ const PostInfoLeft = styled.div`
 `;
 
 const TitleLeft = styled.div`
-  font-size: 16px;
   color: #114c5f;
+  font-size: 16px;
   font-weight: 600;
 `;
 
@@ -306,22 +310,7 @@ const TitleMain = styled.h1`
   font-size: 33px;
   color: #114c5f;
   font-weight: 600;
-`;
-
-const PostInfoMain = styled.div`
-  padding-top: 10px;
-  word-wrap: break-word;
-  word-break: break-word;
-  display: flex;
-  text-align: left;
-  & > *:nth-child(2):not(:last-child) {
-    padding-right: 5px;
-  }
-  & > *:nth-child(1):not(:last-child)::after,
-  & > *:nth-child(3):not(:last-child)::after {
-    content: "·";
-    margin: 0 10px;
-  }
+  margin-bottom: 10px;
 `;
 
 const CompanyNameMain = styled.div`
@@ -329,29 +318,51 @@ const CompanyNameMain = styled.div`
   font-weight: 400;
 `;
 
-const PlaceMain = styled(CompanyNameMain)`
-  /* color: rgba(0, 0, 0, 0.6); */
+const ApplicantCard = styled.div`
+  display: flex;
+  position: relative;
+  align-items: center;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  padding: 10px;
 `;
 
-const RemoteMain = styled(PlaceMain)`
-  color: #114c5f;
+const ApplicantPhoto = styled.div`
+  img {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+  }
 `;
 
-const TypeMain = styled(CompanyNameMain)`
-  /* color: #114c5f; */
+const ApplicantInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-left: 15px;
+`;
+
+const ApplicantName = styled.span`
   font-weight: 600;
+  &:hover {
+    cursor: pointer;
+    text-decoration: underline;
+  }
 `;
+
+const ApplicantDescription = styled.span``;
 
 const mapStateToProps = (state) => {
   return {
     user: state.userState.user,
     publication: state.publicationState.publications,
+    applicants: state.applicantState.applicants,
   };
 };
 
 const mapDispatchToProps = (dispatch) => ({
   getPublication: (id) => dispatch(getPublicationAPI(id)),
   deletePublication: (id) => dispatch(deletePublicationAPI(id)),
+  getApplicants: (id) => dispatch(getApplicantsAPI(id)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Publication);

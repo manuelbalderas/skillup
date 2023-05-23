@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { connect } from "react-redux";
 import Dropdown from "./Dropdown";
-import { postPublicationAPI } from "../../actions";
+import { getPublicationAPI, editPublicationAPI } from "../../actions";
+// import { postPublicationAPI } from "../../actions";
 
 const CreatePublication = (props) => {
-  const [email, setEmail] = useState("");
+  const { id } = useParams();
+
   const [title, setTitle] = useState(null);
   const [isRemote, setIsRemote] = useState(null);
   const [location, setLocation] = useState(null);
@@ -14,34 +16,6 @@ const CreatePublication = (props) => {
   const [description, setDescription] = useState(null);
   const [showNext, setShowNext] = useState(false);
   const navigate = useNavigate();
-
-  console.log(isRemote);
-  console.log(type);
-
-  const handleChangeWindow = (e) => {
-    e.preventDefault();
-    setShowNext(!showNext);
-  };
-
-  const handlePublish = (e) => {
-    e.preventDefault();
-    try {
-      const email = props.user.email;
-      const isRemoteValue = isRemote.value;
-      const typeValue = type.value;
-      props.postPublication({
-        email,
-        title,
-        isRemoteValue,
-        location,
-        typeValue,
-        description,
-      });
-      navigate("/");
-    } catch (err) {
-      console.error(err);
-    }
-  };
 
   const remoteOptions = [
     { value: "yes", label: "Sí" },
@@ -52,6 +26,49 @@ const CreatePublication = (props) => {
     { value: "job", label: "Vacante de empleo" },
     { value: "course", label: "Curso" },
   ];
+
+  useEffect(() => {
+    props.getPublication(id);
+  }, [id]);
+
+  useEffect(() => {
+    setTitle(props.publication.title);
+    setLocation(props.publication.location);
+    setIsRemote(
+      remoteOptions.find((option) => option.value === props.publication.remote)
+    );
+    setType(
+      typeOptions.find((option) => option.value === props.publication.type)
+    );
+    setDescription(props.publication.publication_description);
+    console.log(description);
+  }, [props.publication]);
+
+  console.log(type);
+
+  const handleChangeWindow = (e) => {
+    e.preventDefault();
+    setShowNext(!showNext);
+  };
+
+  const handlePublish = (e) => {
+    e.preventDefault();
+    try {
+      const isRemoteValue = isRemote.value;
+      const typeValue = type.value;
+      props.editPublication({
+        id,
+        title,
+        isRemoteValue,
+        location,
+        typeValue,
+        description,
+      });
+      navigate(-1);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <>
@@ -128,8 +145,8 @@ const CreatePublication = (props) => {
                       <Remote>
                         {isRemote
                           ? isRemote.value == "yes"
-                            ? "En remoto"
-                            : "Presencial"
+                            ? "(En remoto)"
+                            : "(Presencial)"
                           : "No contamos con dicha información"}
                       </Remote>
                       <Type>
@@ -145,12 +162,8 @@ const CreatePublication = (props) => {
                 <ContainerMain>
                   <Content>
                     <TitleMain>
-                      Háblanos{" "}
-                      {type
-                        ? type.value == "job"
-                          ? "del puesto"
-                          : "del curso"
-                        : "de la publicación"}
+                      Háblanos del{" "}
+                      {type ? (type == "job" ? "puesto" : "curso") : null}
                     </TitleMain>
                     <Description>
                       Descripción
@@ -162,7 +175,7 @@ const CreatePublication = (props) => {
                     <Buttons>
                       <Back onClick={handleChangeWindow}>Volver</Back>
                       <Publish onClick={handlePublish}>
-                        Publicar{" "}
+                        Editar{" "}
                         {type ? (type == "job" ? "puesto" : "curso") : null}
                       </Publish>
                     </Buttons>
@@ -231,12 +244,12 @@ const Section = styled.section`
 `;
 
 const Form = styled.div`
+  box-shadow: 0px 0px 0px 1.33333px rgba(0, 0, 0, 0.08);
   background-color: white;
   width: 504px;
   /* height: 100%; */
   border-radius: 13px;
   margin: 10px;
-  box-shadow: 0px 0px 0px 1.33333px rgba(0, 0, 0, 0.08);
   @media (max-width: 768px) {
     /* width: 80%; */
   }
@@ -430,20 +443,23 @@ const Publish = styled.button`
 `;
 
 const Back = styled(Publish)`
-  cursor: pointer;
   background: transparent;
   color: rgba(0, 0, 0, 0.6);
   border: 2px solid rgba(0, 0, 0, 0.6);
+  cursor: pointer;
 `;
 
 const mapStateToProps = (state) => {
   return {
     user: state.userState.user,
+    publication: state.publicationState.publications,
   };
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  postPublication: (data) => dispatch(postPublicationAPI(data)),
+  // postPublication: (data) => dispatch(postPublicationAPI(data)),
+  getPublication: (id) => dispatch(getPublicationAPI(id)),
+  editPublication: (data) => dispatch(editPublicationAPI(data)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreatePublication);

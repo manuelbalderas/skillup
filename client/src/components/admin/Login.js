@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Navigate } from "react-router-dom";
 import styled, { css } from "styled-components";
-import { companyLogInAPI } from "../../actions";
+import { adminLogInAPI } from "../../actions";
 import { connect } from "react-redux";
 
 const Login = (props) => {
@@ -9,16 +9,10 @@ const Login = (props) => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  const navigate = useNavigate();
-
   const handleLogin = (e) => {
     e.preventDefault();
     props.logIn({ email, password });
-  };
-
-  const handleSignUp = (e) => {
-    e.preventDefault();
-    navigate("/company/sign-up");
+    console.log(props.user);
   };
 
   const changeShowPassword = () => {
@@ -29,7 +23,7 @@ const Login = (props) => {
     <Container>
       {props.user && <Navigate to="/home" />}
       <img src="/images/sign-up-logo.svg" />
-      <h1>Ingresa como empresa</h1>
+      <h1>Ingresa como administrador</h1>
       <Form>
         {props.detail && <Error>{props.detail}</Error>}
         <InputWrapper>
@@ -53,16 +47,7 @@ const Login = (props) => {
             </button>
           </InputField>
         </InputWrapper>
-        <ForgotPassword>
-          <a href="">
-            <span>¿Olvidaste tu contraseña?</span>
-          </a>
-        </ForgotPassword>
         <LogInHero onClick={handleLogin}>Ingresar</LogInHero>
-        <Divider>
-          <span>o</span>
-        </Divider>
-        <SignUp onClick={handleSignUp}>¿No tienes cuenta? Registrate</SignUp>
       </Form>
     </Container>
   );
@@ -179,6 +164,7 @@ const LogInHero = styled.button`
   font-weight: 600;
   border: none;
   font-size: 16px;
+  margin-top: 20px;
 `;
 
 const SignUp = styled(LogInHero)`
@@ -222,7 +208,7 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  logIn: (data) => dispatch(companyLogInAPI(data)),
+  logIn: (data) => dispatch(adminLogInAPI(data)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);

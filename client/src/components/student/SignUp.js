@@ -98,16 +98,10 @@ const SignUp = (props) => {
           <button onClick={handleClick}>Aceptar y unirse</button>
         </Accept>
         <BottomText>
-          <LogIn>
-            <span>
-              ¿Ya eres miembro de SkillUp?
-              <a>Iniciar sesión</a>
-            </span>
-          </LogIn>
           <Company>
             <span>
               ¿Quieres crear un perfil para tu empresa?
-              <a> Hazlo acá</a>
+              <a href="/company/sign-up"> Hazlo acá</a>
             </span>
           </Company>
         </BottomText>
@@ -171,6 +165,9 @@ const Company = styled(LogIn)`
     font-size: 14;
     margin: 10px;
     padding-bottom: 20px;
+    a {
+      text-decoration: none;
+    }
   }
 `;
 
@@ -218,6 +215,7 @@ const InputField = styled.a`
   }
 
   button {
+    cursor: pointer;
     background: transparent;
     border: none;
     span {

@@ -34,7 +34,7 @@ const SignUp = (props) => {
 
   return (
     <Container>
-      {props.user && <Navigate to="/" />}
+      {props.user && <Navigate to="/company/sign-up/verification" />}
       <img src="/images/sign-up-logo.svg" />
       <h1>Estás a unos pasos de cambiar el futuro de miles de estudiantes</h1>
       <Form>
@@ -189,6 +189,7 @@ const InputField = styled.a`
   }
 
   button {
+    cursor: pointer;
     background: transparent;
     border: none;
     span {
@@ -201,7 +202,9 @@ const InputField = styled.a`
 `;
 
 const Accept = styled.div`
+  margin-top: 20px;
   button {
+    cursor: pointer;
     margin: 15px auto;
     color: white;
     background: #0799b6;

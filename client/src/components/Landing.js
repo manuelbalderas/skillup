@@ -201,8 +201,6 @@ const Company = styled.a`
   background-color: #f2e6cf;
   text-decoration: none;
   &:hover {
-    /* background-color: rgba(112, 181, 249, 0.15); */
-    color: #0a66c2;
     text-decoration: none;
   }
 `;
@@ -306,6 +304,7 @@ const InputField = styled.a`
   }
 
   button {
+    cursor: pointer;
     background: transparent;
     border: none;
     span {
@@ -330,6 +329,7 @@ const ForgotPassword = styled.div`
 `;
 
 const LogInHero = styled.button`
+  cursor: pointer;
   background-color: #114c5f;
   padding: 20px 170px;
   border-radius: 30px;

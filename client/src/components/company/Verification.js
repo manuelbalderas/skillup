@@ -4,7 +4,7 @@ const Verification = (props) => {
   return (
     <Container>
       <Content>
-        <a href="/company/login">
+        <a href="/home">
           <img src="/images/sign-up-logo.svg" />
         </a>
         <h1>

@@ -1,7 +1,20 @@
 import { connect } from "react-redux";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 const Leftside = (props) => {
+  const navigate = useNavigate();
+
+  const handleCreate = (e) => {
+    e.preventDefault();
+    navigate("/create");
+  };
+
+  const handleValidate = (e) => {
+    e.preventDefault();
+    navigate("/company/validate");
+  };
+
   return (
     <Container>
       <ArtCard>
@@ -20,6 +33,8 @@ const Leftside = (props) => {
                 ? props.user.student_name + " " + props.user.student_last_name
                 : props.user && props.user.company_name
                 ? props.user.company_name
+                : props.user && props.user.admin
+                ? "Administrador"
                 : "Usuario"}
             </Link>
           </a>
@@ -33,10 +48,17 @@ const Leftside = (props) => {
         </UserInfo>
       </ArtCard>
       {props.user && props.user.verified ? (
-        <Item href="/create">
+        <Item onClick={handleCreate}>
           <span>
             <p>Crear publicación</p>
             <img src="/images/create-publication.svg" alt="" />
+          </span>
+        </Item>
+      ) : props.user && props.user.admin ? (
+        <Item onClick={handleValidate}>
+          <span>
+            <p>Validar empresas</p>
+            <img src="/images/validate.svg" alt="" />
           </span>
         </Item>
       ) : null}
@@ -113,6 +135,7 @@ const AddPhotoText = styled.div`
 `;
 
 const Item = styled.a`
+  box-shadow: 0px 0px 0px 1.33333px rgba(0, 0, 0, 0.08);
   border-color: rgba(0, 0, 0, 0.8);
   background-color: rgba(242, 230, 207, 0.2);
   text-align: left;
@@ -123,12 +146,10 @@ const Item = styled.a`
   margin-top: 20px;
   border-radius: 10px;
   text-decoration: none;
+  cursor: pointer;
   span {
     display: flex;
     align-items: center;
-    svg {
-      color: rgba(0, 0, 0, 0.6);
-    }
     p {
       margin-left: 2.2em;
       margin-bottom: auto;
@@ -140,9 +161,6 @@ const Item = styled.a`
       margin-left: auto;
       margin-right: 2.2em;
     }
-  }
-  &:hover {
-    background-color: #e9e6e1;
   }
 `;
 

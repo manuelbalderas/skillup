@@ -9,7 +9,7 @@ const Header = (props) => {
     <Container>
       <Content>
         <Logo>
-          <a href="/">
+          <a href="/home">
             <img src="/images/header-logo.svg" alt="" />
           </a>
         </Logo>
@@ -26,7 +26,7 @@ const Header = (props) => {
             <NavList className={props.tab === "Trainings" ? "active" : null}>
               <a href="/trainings">
                 <img src="/images/education.svg" alt="" />
-                <span>Capacitaciones</span>
+                <span>Cursos</span>
               </a>
             </NavList>
             <NavList className={props.tab === "Jobs" ? "active" : null}>
@@ -245,6 +245,7 @@ const User = styled(NavList)`
       align-items: center;
       display: flex;
       justify-content: center;
+      cursor: pointer;
     }
   }
 `;

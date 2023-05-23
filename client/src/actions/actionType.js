@@ -1,3 +1,5 @@
 export const SET_USER = "SET_USER";
 export const SET_DETAIL = "SET_DETAIL";
 export const GET_PUBLICATIONS = "GET_PUBLICATIONS";
+export const GET_APPLICANTS = "GET_APPLICANTS";
+export const GET_COMPANIES = "GET_COMPANIES";

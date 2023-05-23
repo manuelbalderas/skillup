@@ -1,21 +1,46 @@
 import styled from "styled-components";
 import { useParams, useNavigate } from "react-router-dom";
-import { getPublicationAPI } from "../../actions";
+import {
+  getPublicationAPI,
+  postCVAPI,
+  postInscriptionAPI,
+} from "../../actions";
 import { connect } from "react-redux";
 import { useEffect } from "react";
+import { useState } from "react";
 
-const Apply = (props, { match }) => {
+const Apply = (props) => {
   const { id } = useParams();
+  const [file, setFile] = useState(null);
+  const [cv_path, setCv_file] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     props.getPublication(id);
-    console.log(props.publication);
   }, [props.publication]);
+
+  const handleFileChange = (e) => {
+    e.preventDefault();
+    const file = e.target.files[0];
+    if (file) {
+      setFile(file);
+      props.postCV(file);
+    } else {
+      console.log("No file selected");
+    }
+  };
 
   const handleCancel = (e) => {
     e.preventDefault();
     navigate(-1);
+  };
+
+  const handleAccept = (e) => {
+    e.preventDefault();
+    const student_id = props.user.email;
+    const publication_id = props.publication.id;
+    props.postInscription({ student_id, publication_id, cv_path });
+    navigate(-2);
   };
 
   return (
@@ -58,8 +83,18 @@ const Apply = (props, { match }) => {
         </Headline>
         <CV>
           <CVTitle>Importa tu CV</CVTitle>
-          <ImportButton>Sube tu CV en PDF</ImportButton>
+          <ImportButton>
+            <input type="file" accept=".pdf" onChange={handleFileChange} />
+            Sube tu CV en PDF
+          </ImportButton>
+          <SelectedFile>
+            Archivo seleccionado:{" "}
+            {file && file.name
+              ? file.name
+              : "No se ha seleccionado ningún archivo."}
+          </SelectedFile>
           <CancelButton onClick={handleCancel}>Cancelar</CancelButton>
+          <AcceptButton onClick={handleAccept}>Aceptar</AcceptButton>
         </CV>
       </Content>
     </Container>
@@ -100,6 +135,10 @@ const Section = styled.section`
 `;
 
 const Content = styled.div``;
+
+const SelectedFile = styled.span`
+  color: #114c5f;
+`;
 
 const Headline = styled.div`
   margin-top: 40px;
@@ -145,18 +184,39 @@ const Title = styled.div`
   font-weight: 600;
 `;
 
-const ImportButton = styled.button`
+const ImportButton = styled.div`
   background: transparent;
   padding: 20px 100px;
+  border-radius: 8px;
+  font-weight: 600;
+  color: #0799b6;
+  border: 1px solid #0799b6;
+  font-size: 16px;
+  input[type="file"] {
+    opacity: 0;
+    position: absolute;
+    background: green;
+    cursor: pointer;
+  }
+`;
+
+const CancelButton = styled.div`
+  background: transparent;
+  padding: 5px 10px;
   border-radius: 8px;
   color: #0799b6;
   font-weight: 600;
   border: 1px solid #0799b6;
-  /* border: none; */
-  font-size: 16px;
+  margin-left: 10px;
+  display: flex;
+  align-content: center;
+  cursor: pointer;
 `;
 
-const CancelButton = styled(ImportButton)``;
+const AcceptButton = styled(CancelButton)`
+  background-color: #0799b6;
+  color: white;
+`;
 
 const CVTitle = styled(Title)`
   color: #0799b6;
@@ -201,6 +261,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
   getPublication: (id) => dispatch(getPublicationAPI(id)),
+  postCV: (file) => dispatch(postCVAPI(file)),
+  postInscription: (data) => dispatch(postInscriptionAPI(data)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Apply);

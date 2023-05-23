@@ -6,10 +6,14 @@ import Header from "./components/Header";
 import Feed from "./components/Feed";
 import StudentSignUp from "./components/student/SignUp";
 import CreatePublication from "./components/company/CreatePublication";
+import EditPublication from "./components/company/EditPublication";
 import CompanySignUp from "./components/company/SignUp";
 import Verification from "./components/company/Verification";
+import Validate from "./components/admin/Validate";
 import CompanyLogin from "./components/company/Login";
+import AdminLogin from "./components/admin/Login";
 import Publication from "./components/Publication";
+import Applicants from "./components/company/Applicants";
 import Apply from "./components/student/Apply";
 import { getUserAuth } from "./actions";
 import { connect } from "react-redux";
@@ -47,10 +51,15 @@ function App(props) {
           <Route path="/student/sign-up" element={<StudentSignUp />}></Route>
           <Route path="/company/sign-up" element={<CompanySignUp />}></Route>
           <Route
+            path="/company/validate"
+            element={[<Header />, <Validate />]}
+          ></Route>
+          <Route
             path="/company/sign-up/verification"
             element={<Verification />}
           ></Route>
           <Route path="/company/login" element={<CompanyLogin />}></Route>
+          <Route path="/admin/login" element={<AdminLogin />}></Route>
           <Route
             path="/create"
             element={[
@@ -63,8 +72,16 @@ function App(props) {
             element={[<Header />, <Publication />]}
           ></Route>
           <Route
+            path="/publication/edit/:id"
+            element={[<Header />, <EditPublication />]}
+          ></Route>
+          <Route
             path="/publication/apply/:id"
             element={[<Header />, <Apply />]}
+          ></Route>
+          <Route
+            path="/publication/applicants/:id"
+            element={[<Header />, <Applicants />]}
           ></Route>
         </Routes>
       </Router>

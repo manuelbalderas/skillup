@@ -76,7 +76,7 @@ const Main = (props) => {
                     src={
                       publication.profile_pic
                         ? publication.profile_pic
-                        : "/images/user.svg"
+                        : "/images/company.svg"
                     }
                     draggable="false"
                   />
@@ -131,6 +131,7 @@ const Container = styled.div`
 
 const Publications = styled.div`
   background-color: rgba(242, 230, 207, 0.2);
+  box-shadow: 0px 0px 0px 1.33333px rgba(0, 0, 0, 0.08);
   margin-bottom: 50px;
   border-radius: 15px;
   padding: 10px;
@@ -188,6 +189,7 @@ const PublicationTitle = styled.a`
   line-height: 1.5;
   color: #4a6eb0;
   font-weight: 600;
+  cursor: pointer;
 `;
 
 const ProfileName = styled.span`
