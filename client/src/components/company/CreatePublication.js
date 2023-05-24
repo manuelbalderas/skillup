@@ -163,7 +163,11 @@ const CreatePublication = (props) => {
                       <Back onClick={handleChangeWindow}>Volver</Back>
                       <Publish onClick={handlePublish}>
                         Publicar{" "}
-                        {type ? (type == "job" ? "puesto" : "curso") : null}
+                        {type
+                          ? type.value == "job"
+                            ? "puesto"
+                            : "curso"
+                          : null}
                       </Publish>
                     </Buttons>
                   </Content>
