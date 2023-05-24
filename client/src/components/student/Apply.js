@@ -83,18 +83,22 @@ const Apply = (props) => {
         </Headline>
         <CV>
           <CVTitle>Importa tu CV</CVTitle>
-          <ImportButton>
-            <input type="file" accept=".pdf" onChange={handleFileChange} />
-            Sube tu CV en PDF
-          </ImportButton>
-          <SelectedFile>
-            Archivo seleccionado:{" "}
-            {file && file.name
-              ? file.name
-              : "No se ha seleccionado ningún archivo."}
-          </SelectedFile>
-          <CancelButton onClick={handleCancel}>Cancelar</CancelButton>
-          <AcceptButton onClick={handleAccept}>Aceptar</AcceptButton>
+          <Imported>
+            <ImportButton>
+              <input type="file" accept=".pdf" onChange={handleFileChange} />
+              Sube tu CV en PDF
+            </ImportButton>
+            <SelectedFile>
+              Archivo seleccionado:{" "}
+              {file && file.name
+                ? file.name
+                : "No se ha seleccionado ningún archivo."}
+            </SelectedFile>
+          </Imported>
+          <Buttons>
+            <CancelButton onClick={handleCancel}>Cancelar</CancelButton>
+            <AcceptButton onClick={handleAccept}>Aceptar</AcceptButton>
+          </Buttons>
         </CV>
       </Content>
     </Container>
@@ -134,6 +138,11 @@ const Section = styled.section`
   }
 `;
 
+const Buttons = styled.div`
+  display: flex;
+  margin-top: 20vh;
+`;
+
 const Content = styled.div``;
 
 const SelectedFile = styled.span`
@@ -157,9 +166,19 @@ const Headline = styled.div`
   padding: 20px 20px 16px;
 `;
 
+const Imported = styled.div`
+  display: flex;
+  flex-direction: column;
+  /* width: 40%; */
+  justify-content: center;
+  align-items: center;
+  margin-top: 10vh;
+`;
+
 const CV = styled(Headline)`
   margin-top: 100px;
   display: flex;
+  flex-direction: column;
 `;
 
 const Photo = styled.div`
@@ -179,6 +198,7 @@ const PostInfo = styled.div`
 `;
 
 const Title = styled.div`
+  text-align: left;
   color: #114c5f;
   font-size: 25px;
   font-weight: 600;
@@ -186,12 +206,13 @@ const Title = styled.div`
 
 const ImportButton = styled.div`
   background: transparent;
-  padding: 20px 100px;
+  padding: 10px 30px;
   border-radius: 8px;
   font-weight: 600;
   color: #0799b6;
   border: 1px solid #0799b6;
-  font-size: 16px;
+  width: 200px;
+  margin-bottom: 5px;
   input[type="file"] {
     opacity: 0;
     position: absolute;
@@ -202,7 +223,7 @@ const ImportButton = styled.div`
 
 const CancelButton = styled.div`
   background: transparent;
-  padding: 5px 10px;
+  padding: 15px 20px;
   border-radius: 8px;
   color: #0799b6;
   font-weight: 600;
@@ -220,6 +241,7 @@ const AcceptButton = styled(CancelButton)`
 
 const CVTitle = styled(Title)`
   color: #0799b6;
+  margin-bottom: 40px;
 `;
 
 const CompanyName = styled.div`
@@ -242,12 +264,12 @@ const Remote = styled(CompanyName)`
 
 const Type = styled.div`
   color: #114c5f;
-  width: 150px;
+  width: 170px;
   display: flex;
   justify-content: center;
   margin-top: 10px;
   padding: 5px;
-  font-weight: 400;
+  font-weight: 600;
   border-radius: 50px;
   background-color: rgba(59, 63, 81, 0.2);
 `;
