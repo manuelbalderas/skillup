@@ -49,8 +49,8 @@ const Apply = (props) => {
       <Content>
         <Headline>
           <Photo>
-            {props.user && props.user.profile_pic ? (
-              <img src={props.user.profile_pic} alt="" />
+            {props.publication && props.publication.profile_pic ? (
+              <img src={props.publication.profile_pic} alt="" />
             ) : (
               <img src="/images/company.svg" alt="" />
             )}

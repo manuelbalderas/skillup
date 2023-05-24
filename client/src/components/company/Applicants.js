@@ -110,7 +110,7 @@ const Publication = (props) => {
                 props.applicants.map((applicant, key) => (
                   <ApplicantCard>
                     <ApplicantPhoto>
-                      <img src="/images/user.svg" />
+                      <img src={applicant.profile_pic || "/images/user.svg"} />
                     </ApplicantPhoto>
                     <ApplicantInfo>
                       <ApplicantName
